@@ -59,6 +59,12 @@ void BugModel::setLives(int lives)
     if (lives != m_lives) {
         m_lives = lives;
         emit livesChanged();
+        if (m_lives == 0) {
+            setEnabled(false);
+        }
+        else {
+            setEnabled(true);
+        }
     }
 }
 
@@ -67,6 +73,15 @@ void BugModel::updateLives(int change)
     int newLives = m_lives + change;
     if ((newLives >= 0) && (newLives <= m_maxLives))
     {
+        if (newLives < m_lives)
+        {
+            startInvincibility(5000);
+            emit lifeLost();
+        }
+        else if (newLives > m_lives)
+        {
+            emit lifeGained();
+        }
         setLives(newLives);
     }
 }
@@ -141,7 +156,6 @@ void BugModel::birdCollision(int birdId, bool colliding)
             m_birdId = birdId;
             setActiveBirdCollision(true);
             updateLives(-1);
-            startInvincibility(5000);
         }
         else if (m_activeBirdCollision && m_birdId == birdId && ! colliding) {
             setActiveBirdCollision(false);

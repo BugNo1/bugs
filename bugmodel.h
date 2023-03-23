@@ -50,6 +50,8 @@ signals:
     void nameChanged();
     void maxLivesChanged();
     void livesChanged();
+    void lifeLost();
+    void lifeGained();
     void invincibleChanged();
     void activeBugCollisionChanged();
     void activeBirdCollisionChanged();

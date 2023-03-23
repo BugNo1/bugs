@@ -15,5 +15,6 @@
         <file>media/ladybug-up.png</file>
         <file>media/ladybug-up-blue.png</file>
         <file>media/hit.wav</file>
+        <file>media/bird-eating.wav</file>
     </qresource>
 </RCC>

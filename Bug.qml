@@ -25,16 +25,24 @@ Item {
     onBugModelChanged: {
         if (typeof bugModel !== "undefined") {
             bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
+            bugModel.enabledChanged.connect(onBugEnabledChanged)
         }
     }
 
     function onActiveBugCollisionChanged() {
         if (bugModel.activeBugCollision) {
-            console.log("bugs collision active")
-            // play sound
             bugHit.play()
+        }
+    }
+
+    function onBugEnabledChanged() {
+        if (bugModel.enabled) {
+            animationTimer.running = true
+            bug.visible = true
         } else {
-            console.log("bugs collision inactive")
+            animationTimer.running = false
+            bugSound.stop()
+            bug.visible = false
         }
     }
 
@@ -142,7 +150,7 @@ Item {
     }
 
     // enable for debugging
-    Shape {
+    /*Shape {
         width: 40
         height: 40
         anchors.centerIn: parent
@@ -158,7 +166,7 @@ Item {
                 sweepAngle: 360
             }
         }
-    }
+    }*/
 
     Image {
         id: bugImage

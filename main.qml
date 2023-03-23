@@ -165,8 +165,6 @@ Window {
             bugs[bugIndex].bugModel.activeBirdCollision = false
             bugs[bugIndex].bugModel.enabled = true
         }
-
-        bugs[0].bugModel.startInvincibility(5000)
     }
 
     function startGame() {
@@ -242,10 +240,12 @@ Window {
 
     function detectAllCollision() {
         // bug vs. bug collision
-        var colliding = detectCollision(bug1, bug2)
-        bugs[0].bugModel.bugCollision(1, colliding)
-        // only one bug needs to know that a collision happened (so only one bug collision sound is played)
-        //bugs[1].bugModel.bugCollision(0, colliding)
+        if (bugs[0].bugModel.enabled && bugs[1].bugModel.enabled) {
+            var colliding = detectCollision(bug1, bug2)
+            bugs[0].bugModel.bugCollision(1, colliding)
+            // only one bug needs to know that a collision happened (so only one bug collision sound is played)
+            //bugs[1].bugModel.bugCollision(0, colliding)
+        }
 
         // bug vs. bird collision
         for (var bugIndex = 0; bugIndex < bugs.length; bugIndex++) {

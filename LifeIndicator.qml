@@ -16,6 +16,8 @@ Item {
         if (typeof bugModel !== "undefined") {
             bugModel.maxLivesChanged.connect(onMaxLivesChanged)
             bugModel.livesChanged.connect(onLivesChanged)
+            bugModel.lifeLost.connect(onLifeLost)
+            bugModel.lifeGained.connect(onLifeGained)
         }
     }
 
@@ -30,13 +32,22 @@ Item {
     }
 
     function onLivesChanged() {
-        // play different sound when life lost or life gained
         for (var i = 0; i < bugModel.lives; i++) {
             lifeObjects[i].visible = true
         }
         for (var j = bugModel.lives; j < bugModel.maxLives; j++) {
             lifeObjects[j].visible = false
         }
+    }
+
+    function onLifeLost() {
+        birdEating.source = ""
+        birdEating.source = "media/bird-eating.wav"
+        birdEating.play()
+    }
+
+    function onLifeGained() {
+        // play sound for gaining life
     }
 
     Rectangle {
@@ -46,5 +57,10 @@ Item {
         radius: 10
         border.width: 3
         border.color: "peru"
+    }
+
+    Audio {
+        id: birdEating
+        source: "media/bird-eating.wav"
     }
 }

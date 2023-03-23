@@ -165,7 +165,7 @@ Item {
     }
 
     // enable for debugging
-    Shape {
+    /*Shape {
         width: hitboxRadius * 2
         height: hitboxRadius * 2
         x: (bird.width / 2) - (width / 2)
@@ -182,7 +182,7 @@ Item {
                 sweepAngle: 360
             }
         }
-    }
+    }*/
 
     Image {
         id: birdImage
