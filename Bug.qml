@@ -1,0 +1,198 @@
+import QtQuick 2.15
+import QtMultimedia 5.15
+import QtQuick.Shapes 1.15
+
+Item {
+    id: bug
+    width: 55
+    height: 50
+
+    property var sourceFiles: ["media/ladybug-up.png", "media/ladybug-middle.png", "media/ladybug-down.png" ]
+    property int sourceFilesIndex: 0
+    property int timerCounter: 0
+
+    // controller values - used as speed values for movement
+    property real xAxisValue: 0
+    property real yAxisValue: 0
+
+    // used for collision detection (hitbox is a circle)
+    property int hitboxRadius: 20
+    property int hitboxX: 0
+    property int hitboxY: 0
+
+    property var bugModel
+
+    onBugModelChanged: {
+        if (typeof bugModel !== "undefined") {
+            bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
+        }
+    }
+
+    function onActiveBugCollisionChanged() {
+        if (bugModel.activeBugCollision) {
+            console.log("bugs collision active")
+            // play sound
+            bugHit.play()
+        } else {
+            console.log("bugs collision inactive")
+        }
+    }
+
+    Component.onCompleted: {
+        setRandomPosition()
+    }
+
+    function setRandomPosition() {
+        x = (Math.random() * (mainWindow.width - 200)) + 100
+        y = (Math.random() * (mainWindow.height - 200)) + 100
+        hitboxX = x + width / 2
+        hitboxY = y + height / 2
+    }
+
+    Timer {
+        id: animationTimer
+        interval: 20;
+        running: true;
+        repeat: true;
+        onTriggered: {
+            changeImage()
+            if (xAxisValue != 0.0 || yAxisValue != 0.0) {
+                bugSound.source = "media/bug-walk.wav"
+                bugSound.play()
+                move()
+                rotate()
+                timerCounter += 1
+            } else {
+                timerCounter = 0
+                bugSound.stop()
+                // workaround needed due to qt-multimedia bugs
+                bugSound.source = ""
+            }
+        }
+    }
+
+    function changeImage() {
+        if (timerCounter > 0) {
+            var absAxisValue = Math.abs(yAxisValue)
+            if (Math.abs(xAxisValue) >= Math.abs(yAxisValue)) {
+                absAxisValue = Math.abs(xAxisValue)
+            }
+
+            var maxImageCounter = 3 // lowest speed
+            var nextImageCounter = maxImageCounter - Math.round(maxImageCounter * absAxisValue) + 1
+            if (timerCounter >= nextImageCounter) {
+                // next image
+                if (sourceFilesIndex < sourceFiles.length - 1) {
+                    sourceFilesIndex += 1
+                } else {
+                    sourceFilesIndex = 0
+                }
+                timerCounter = 0
+            }
+            bugImage.source = sourceFiles[sourceFilesIndex]
+        } else {
+            bugImage.source = sourceFiles[1]
+        }
+    }
+
+    function rotate() {
+        var c = Math.sqrt(Math.pow(xAxisValue, 2.0) + Math.pow(yAxisValue, 2.0))
+        var q = Math.pow(xAxisValue, 2.0) / c
+        var p = c - q
+        var h = Math.sqrt(p * q)
+        var angle = 0
+
+        if (xAxisValue >= 0 && yAxisValue < 0) {
+            angle = Math.atan(h / p) * (180 / Math.PI)
+        } else if (xAxisValue >= 0 && yAxisValue >= 0) {
+            if (p == 0) {
+                angle = 90
+            } else {
+                angle = 180 - (Math.atan(h / p) * (180 / Math.PI))
+            }
+        } else if (xAxisValue < 0 && yAxisValue >= 0) {
+            if (p == 0) {
+                angle = 270
+            } else {
+                angle = 180 + (Math.atan(h / p) * (180 / Math.PI))
+            }
+        } else if (xAxisValue < 0 && yAxisValue < 0) {
+            angle = 360 - (Math.atan(h / p) * (180 / Math.PI))
+        }
+
+        // check for NaN
+        if (angle == angle) {
+            rotation = angle
+        }
+    }
+
+    function move() {
+        var offset = 10
+        if ((!((xAxisValue < 0) && (x + offset < 0))) && (!((xAxisValue >= 0) && (x + offset > mainWindow.width - 30))))
+        {
+            x += offset * xAxisValue
+            hitboxX = x + width / 2
+        }
+
+        if ((!((yAxisValue < 0) && (y + offset < 0))) && (!((yAxisValue >= 0) && (y + offset > mainWindow.height - 30))))
+        {
+            y += offset * yAxisValue
+            hitboxY = y + height / 2
+        }
+    }
+
+    // enable for debugging
+    Shape {
+        width: 40
+        height: 40
+        anchors.centerIn: parent
+        ShapePath {
+            fillColor: "red"
+            strokeColor: "red"
+            PathAngleArc {
+                centerX: 20
+                centerY: 20
+                radiusX: hitboxRadius
+                radiusY: hitboxRadius
+                startAngle: 0
+                sweepAngle: 360
+            }
+        }
+    }
+
+    Image {
+        id: bugImage
+        anchors.fill: parent
+        source: sourceFiles[1]
+    }
+
+    Shape {
+        width: 56
+        height: 56
+        anchors.centerIn: parent
+        visible: bugModel.invincible
+        ShapePath {
+            fillColor: "transparent"
+            strokeColor: "gold"
+            strokeWidth: 3
+            PathAngleArc {
+                centerX: 27
+                centerY: 30
+                radiusX: 28
+                radiusY: 28
+                startAngle: 0
+                sweepAngle: 360
+            }
+        }
+    }
+
+    Audio {
+        id: bugSound
+        source: "media/bug-walk.wav"
+    }
+
+    SoundEffect {
+        id: bugHit
+        source: "media/hit.wav"
+    }
+}

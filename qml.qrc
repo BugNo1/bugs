@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Bug.qml</file>
+        <file>Bird.qml</file>
+        <file>LifeIndicator.qml</file>
+        <file>TimeLevelIndicator.qml</file>
+        <file>media/bg.jpg</file>
+        <file>media/bird.png</file>
+        <file>media/bug-walk.wav</file>
+        <file>media/ladybug-down.png</file>
+        <file>media/ladybug-down-blue.png</file>
+        <file>media/ladybug-middle.png</file>
+        <file>media/ladybug-middle-blue.png</file>
+        <file>media/ladybug-up.png</file>
+        <file>media/ladybug-up-blue.png</file>
+        <file>media/hit.wav</file>
+    </qresource>
+</RCC>
