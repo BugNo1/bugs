@@ -16,5 +16,8 @@
         <file>media/ladybug-up-blue.png</file>
         <file>media/hit.wav</file>
         <file>media/bird-eating.wav</file>
+        <file>GameStartOverlay.qml</file>
+        <file>BugNameInput.qml</file>
+        <file>CrossButton.qml</file>
     </qresource>
 </RCC>

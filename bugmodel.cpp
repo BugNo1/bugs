@@ -21,6 +21,7 @@ void BugModel::setup()
     connect(m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
     m_activeBugCollision = false;
     m_activeBirdCollision = false;
+    setName("TestName");
 }
 
 QString BugModel::name() const

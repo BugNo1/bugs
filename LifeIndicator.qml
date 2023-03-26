@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: lifeIndicator
-    height: parent.height - 10
+    height: parent.height
+
     width: 200
 
     property string sourceFile: "media/ladybug-middle.png"
@@ -23,7 +24,7 @@ Item {
 
     function onMaxLivesChanged() {
         for (var i = 0; i < bugModel.maxLives; i++)  {
-            var currentObject = Qt.createQmlObject('import QtQuick 2.15; Image { y: 4; width: 30; height: 30; rotation: 45; source: "' + sourceFile + '"}',
+            var currentObject = Qt.createQmlObject('import QtQuick 2.15; Image { y: 34; width: 30; height: 30; rotation: 45; source: "' + sourceFile + '"}',
                                                    lifeIndicator,
                                                    "lifeindicator");
             currentObject.x = Math.floor(width / (bugModel.maxLives + 1)) * (i + 1) - 15
@@ -50,9 +51,21 @@ Item {
         // play sound for gaining life
     }
 
+    Text {
+        id: name
+        width: parent.width
+        text: bugModel.name
+        font.family: "Tomson Talks"
+        font.pixelSize: 30
+        color: "white"
+        horizontalAlignment: Text.AlignHCenter
+    }
+
     Rectangle {
         id: background
-        anchors.fill: parent
+        width: parent.width
+        height: 40
+        anchors.bottom: parent.bottom
         color: "tan"
         radius: 10
         border.width: 3

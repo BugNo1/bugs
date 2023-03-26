@@ -14,6 +14,7 @@ Window {
 
     property var bugs: [bug1, bug2]
     property var birds: []
+    property var overlay
 
     Image {
         id: background
@@ -26,8 +27,8 @@ Window {
         Connections {
             target: QJoysticks
             function onAxisChanged() {
-                bug1.xAxisValue = filterAxis(QJoysticks.getAxis (0, 0))
-                bug1.yAxisValue = filterAxis(QJoysticks.getAxis (0, 1))
+                bug1.xAxisValue = filterAxis(QJoysticks.getAxis(0, 0))
+                bug1.yAxisValue = filterAxis(QJoysticks.getAxis(0, 1))
             }
         }
         Component.onCompleted: {
@@ -43,8 +44,8 @@ Window {
         Connections {
             target: QJoysticks
             function onAxisChanged() {
-                bug2.xAxisValue = filterAxis(QJoysticks.getAxis (1, 0))
-                bug2.yAxisValue = filterAxis(QJoysticks.getAxis (1, 1))
+                bug2.xAxisValue = filterAxis(QJoysticks.getAxis(1, 0))
+                bug2.yAxisValue = filterAxis(QJoysticks.getAxis(1, 1))
             }
         }
         Component.onCompleted: {
@@ -65,35 +66,25 @@ Window {
     RowLayout {
         id: layout
         width: mainWindow.width
-        height: 50
-        x: 0
-        y: mainWindow.height - height
+        height: 70
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
         // stay on top of everything
         z: 1000
-        spacing: 0
+        //spacing: 0
+        anchors.margins: 25
         LifeIndicator {
             id: bug1LifeIndicator
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         TimeLevelIndicator {
             id: timeLifeIndicator
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         LifeIndicator {
             id: bug2LifeIndicator
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
             sourceFile: "media/ladybug-middle-blue.png"
-        }
-    }
-
-    // todo: start game must be triggered by game logic
-    property bool down: true
-    Timer {
-        interval: 2000;
-        running: true;
-        repeat: false;
-        onTriggered: {
-            signalStartGame()
         }
     }
 
@@ -103,6 +94,7 @@ Window {
     // 2. game state: green rectangle button was pressed on both controller,
     //    timer running for clock, timer running for level-up, new bird on each new level,
     //    when hit, remove one bug from lives indicator
+    //    play sound when bird starts a fly over
     // 3. when both bugs have no life left, stop all birds, show the winner and the level and the time for both
 
     property double startTime: 0
@@ -165,6 +157,11 @@ Window {
             bugs[bugIndex].bugModel.activeBirdCollision = false
             bugs[bugIndex].bugModel.enabled = true
         }
+
+        overlay = Qt.createQmlObject('GameStartOverlay {}', mainWindow, "overlay")
+        overlay.bug1Model = bugs[0].bugModel
+        overlay.bug2Model = bugs[1].bugModel
+        overlay.startGameSignal = signalStartGame
     }
 
     function startGame() {
@@ -172,6 +169,7 @@ Window {
 
         // add countdown before starting (countdown state?)
 
+        overlay.destroy()
         startTime = new Date().getTime()
         gameTimer.start()
         collisionDetectionTimer.start()
@@ -223,7 +221,7 @@ Window {
     }
 
     function createBird() {
-        var newBird = Qt.createQmlObject('import QtQuick 2.15; Bird {}', mainWindow, "bird")
+        var newBird = Qt.createQmlObject('Bird {}', mainWindow, "bird")
         birds.push(newBird)
     }
 

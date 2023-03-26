@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: timeLevelIndicator
-    height: parent.height - 10
+    height: 40
     width: 300
 
     signal setLevel(level: int)
