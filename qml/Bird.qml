@@ -37,8 +37,8 @@ Item {
 
     Timer {
         id: nextAnimationTimer
-        running: true;
-        repeat: true;
+        running: true
+        repeat: true
         onTriggered: {
             moveBird()
         }
@@ -187,7 +187,7 @@ Item {
     Image {
         id: birdImage
         anchors.fill: parent
-        source: "media/bird.png"
+        source: "../media/bird.png"
     }
 
     ParallelAnimation {

@@ -5,11 +5,11 @@ import QtQuick.Layouts 1.15
 
 Item {
     id: lifeIndicator
+    width: 200
     height: parent.height
 
-    width: 200
+    property string sourceFile: "../media/ladybug-middle.png"
 
-    property string sourceFile: "media/ladybug-middle.png"
     property var lifeObjects: []
     property var bugModel
 
@@ -43,7 +43,7 @@ Item {
 
     function onLifeLost() {
         birdEating.source = ""
-        birdEating.source = "media/bird-eating.wav"
+        birdEating.source = "../media/bird-eating.wav"
         birdEating.play()
     }
 
@@ -74,6 +74,6 @@ Item {
 
     Audio {
         id: birdEating
-        source: "media/bird-eating.wav"
+        source: "../media/bird-eating.wav"
     }
 }

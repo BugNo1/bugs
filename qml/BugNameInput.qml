@@ -5,10 +5,11 @@ Item {
     height: 35
     anchors.horizontalCenter: parent.horizontalCenter
 
-    property string sourceFile: "media/ladybug-middle.png"
+    property string sourceFile: "../media/ladybug-middle.png"
+
     property var bugModel
 
-    // needed since the GameStartOverlay is dynamically created and the model is not set during object creation
+    // needed since the GameStartOverlay is dynamically created and the model is not yet set during object creation
     onBugModelChanged: {
         if (typeof bugModel !== "undefined") {
             bugModel.nameChanged.connect(changeBugName)
@@ -56,6 +57,4 @@ Item {
             }
         }
     }
-
-
 }

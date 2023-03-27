@@ -21,6 +21,8 @@ void BugModel::setup()
     connect(m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
     m_activeBugCollision = false;
     m_activeBirdCollision = false;
+
+    // TODO: load from file
     setName("TestName");
 }
 

@@ -7,9 +7,7 @@ Item {
     width: 55
     height: 50
 
-    property var sourceFiles: ["media/ladybug-up.png", "media/ladybug-middle.png", "media/ladybug-down.png" ]
-    property int sourceFilesIndex: 0
-    property int timerCounter: 0
+    property var sourceFiles: ["../media/ladybug-up.png", "../media/ladybug-middle.png", "../media/ladybug-down.png" ]
 
     // controller values - used as speed values for movement
     property real xAxisValue: 0
@@ -20,6 +18,8 @@ Item {
     property int hitboxX: 0
     property int hitboxY: 0
 
+    property int sourceFilesIndex: 0
+    property int timerCounter: 0
     property var bugModel
 
     onBugModelChanged: {
@@ -59,13 +59,14 @@ Item {
 
     Timer {
         id: animationTimer
-        interval: 20;
-        running: true;
-        repeat: true;
+        interval: 20
+        running: true
+        repeat: true
         onTriggered: {
+            // must be here to be able to set-back the image when the bug stops
             changeImage()
             if (xAxisValue != 0.0 || yAxisValue != 0.0) {
-                bugSound.source = "media/bug-walk.wav"
+                bugSound.source = "../media/bug-walk.wav"
                 bugSound.play()
                 move()
                 rotate()
@@ -81,6 +82,7 @@ Item {
 
     function changeImage() {
         if (timerCounter > 0) {
+            // get axis with the higher speed
             var absAxisValue = Math.abs(yAxisValue)
             if (Math.abs(xAxisValue) >= Math.abs(yAxisValue)) {
                 absAxisValue = Math.abs(xAxisValue)
@@ -136,12 +138,14 @@ Item {
 
     function move() {
         var offset = 10
+        // x - stay inside the window
         if ((!((xAxisValue < 0) && (x + offset < 0))) && (!((xAxisValue >= 0) && (x + offset > mainWindow.width - 30))))
         {
             x += offset * xAxisValue
             hitboxX = x + width / 2
         }
 
+        // y - stay inside the window
         if ((!((yAxisValue < 0) && (y + offset < 0))) && (!((yAxisValue >= 0) && (y + offset > mainWindow.height - 30))))
         {
             y += offset * yAxisValue
@@ -196,11 +200,11 @@ Item {
 
     Audio {
         id: bugSound
-        source: "media/bug-walk.wav"
+        source: "../media/bug-walk.wav"
     }
 
     SoundEffect {
         id: bugHit
-        source: "media/hit.wav"
+        source: "../media/hit.wav"
     }
 }

@@ -18,7 +18,7 @@ Window {
 
     Image {
         id: background
-        source: "media/bg.jpg"
+        source: "../media/bg.jpg"
         anchors.fill: parent
     }
 
@@ -40,7 +40,7 @@ Window {
 
     Bug {
         id: bug2
-        sourceFiles: ["media/ladybug-up-blue.png", "media/ladybug-middle-blue.png", "media/ladybug-down-blue.png" ]
+        sourceFiles: ["../media/ladybug-up-blue.png", "../media/ladybug-middle-blue.png", "../media/ladybug-down-blue.png" ]
         Connections {
             target: QJoysticks
             function onAxisChanged() {
@@ -71,7 +71,6 @@ Window {
         anchors.bottom: parent.bottom
         // stay on top of everything
         z: 1000
-        //spacing: 0
         anchors.margins: 25
         LifeIndicator {
             id: bug1LifeIndicator
@@ -84,7 +83,7 @@ Window {
         LifeIndicator {
             id: bug2LifeIndicator
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
-            sourceFile: "media/ladybug-middle-blue.png"
+            sourceFile: "../media/ladybug-middle-blue.png"
         }
     }
 
@@ -119,7 +118,6 @@ Window {
             }
             onEntered: resetGame()
         }
-
         DSM.State {
             id: gameRunningState
             DSM.SignalTransition {
@@ -161,7 +159,7 @@ Window {
         overlay = Qt.createQmlObject('GameStartOverlay {}', mainWindow, "overlay")
         overlay.bug1Model = bugs[0].bugModel
         overlay.bug2Model = bugs[1].bugModel
-        overlay.startGameSignal = signalStartGame
+        overlay.signalStartGame = signalStartGame
     }
 
     function startGame() {

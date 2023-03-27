@@ -4,8 +4,9 @@ import QtQuick.Shapes 1.15
 Item {
     property string borderColor: "white"
     property bool buttonPressed: false
-    property int currentSweepAngle: 0
     property bool buttonState: false
+
+    property int currentSweepAngle: 0
 
     onButtonPressedChanged: {
         if (buttonPressed) {
@@ -20,11 +21,11 @@ Item {
 
     Timer {
         id: animationTimer
-        interval: 15;
-        running: false;
-        repeat: true;
+        interval: 20
+        running: false
+        repeat: true
         onTriggered: {
-            currentSweepAngle += 10
+            currentSweepAngle += 15
             borderPath.sweepAngle = currentSweepAngle
             if (currentSweepAngle >= 360) {
                 buttonState = true

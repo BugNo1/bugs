@@ -4,16 +4,15 @@ import QtQuick.Layouts 1.15
 Item {
     width: 400
     height: 360
-
     anchors.centerIn: parent
 
     property var bug1Model
     property var bug2Model
-    property var startGameSignal
+    property var signalStartGame
 
     function checkStartGame() {
         if (button1.buttonState && button2.buttonState) {
-            startGameSignal()
+            signalStartGame()
         }
     }
 
@@ -45,7 +44,7 @@ Item {
 
     BugNameInput {
         id: bug2Input
-        sourceFile: "media/ladybug-middle-blue.png"
+        sourceFile: "../media/ladybug-middle-blue.png"
         bugModel: bug2Model
         anchors.top: bug1Input.bottom
         anchors.margins: 25
@@ -103,6 +102,4 @@ Item {
             }
         }
     }
-
-
 }

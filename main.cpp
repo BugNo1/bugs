@@ -18,8 +18,10 @@ int main(int argc, char *argv[])
     QJoysticks *instance = QJoysticks::getInstance();
 
     QQmlApplicationEngine engine;
+    //QString mediapath = "file://" + QCoreApplication::applicationDirPath() + "/media/";
+    //engine.rootContext()->setContextProperty("mediaPath", mediapath);
     engine.rootContext()->setContextProperty("QJoysticks", instance);
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
     return app.exec();
 }
