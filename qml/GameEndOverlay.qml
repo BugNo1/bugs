@@ -1,22 +1,26 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+import QtMultimedia 5.15
 
 Item {
-    id: gameStartOverlay
+    id: gameEndOverlay
     width: 400
-    height: 360
+    height: 570
     anchors.centerIn: parent
 
-    property var bug1Model
-    property var bug2Model
     property var signalStart
 
     function checkStart() {
         if (button1.buttonState && button2.buttonState) {
             signalStart()
-            gameStartOverlay.destroy()
+            gameEndOverlay.destroy()
         }
     }
+
+    /*Component.onCompleted: {
+        countdownSound.play()
+        opacityAnimation.start()
+    }*/
 
     Rectangle {
         id: background
@@ -30,36 +34,35 @@ Item {
     Text {
         id: headline
         width: parent.width
-        text: "BUGS"
+        text: "Ende"
         font.family: "Tomson Talks"
         font.pixelSize: 100
         color: "white"
         horizontalAlignment: Text.AlignHCenter
     }
 
-    BugNameInput {
-        id: bug1Input
-        bugModel: bug1Model
+    Rectangle {
+        id: highscores
+        width: 300
+        height: 300
+        color: "white"
+        radius: 10
+        border.width: 3
+        border.color: "peru"
         anchors.top: headline.bottom
-        anchors.margins: 25
-    }
-
-    BugNameInput {
-        id: bug2Input
-        sourceFile: "../media/ladybug-middle-blue.png"
-        bugModel: bug2Model
-        anchors.top: bug1Input.bottom
-        anchors.margins: 25
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: 25
+        anchors.bottomMargin: 25
     }
 
     Text {
-        id: pressStartText
-        text: "Zum Start bitte drücken:"
+        id: againText
+        text: "Nochmal spielen:"
         font.family: "Tomson Talks"
         font.pixelSize: 30
         color: "white"
         width: parent.width
-        anchors.top: bug2Input.bottom
+        anchors.top: highscores.bottom
         anchors.margins: 25
         horizontalAlignment: Text.AlignHCenter
     }
@@ -69,7 +72,7 @@ Item {
         width: parent.width
         height: 50
         anchors.left: parent.left
-        anchors.top: pressStartText.bottom
+        anchors.top: againText.bottom
         anchors.topMargin: 25
         CrossButton {
             id: button1
@@ -103,5 +106,10 @@ Item {
                 checkStart()
             }
         }
+    }
+
+    Audio {
+        id: newHighScoreSound
+        //source: "../media/countdown.wav"
     }
 }

@@ -19,5 +19,9 @@
         <file>qml/GameStartOverlay.qml</file>
         <file>qml/BugNameInput.qml</file>
         <file>qml/CrossButton.qml</file>
+        <file>qml/CountdownOverlay.qml</file>
+        <file>media/countdown.wav</file>
+        <file>media/countdown-end.wav</file>
+        <file>qml/GameEndOverlay.qml</file>
     </qresource>
 </RCC>

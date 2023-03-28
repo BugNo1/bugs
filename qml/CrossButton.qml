@@ -8,6 +8,10 @@ Item {
 
     property int currentSweepAngle: 0
 
+    // to have antialiasing
+    layer.enabled: true
+    layer.samples: 4
+
     onButtonPressedChanged: {
         if (buttonPressed) {
             animationTimer.start()
@@ -38,14 +42,15 @@ Item {
         width: parent.width
         height: parent.height
         anchors.centerIn: parent
+        antialiasing: true
         ShapePath {
             fillColor: "black"
             strokeColor: "black"
             PathAngleArc {
                 centerX: width / 2
                 centerY: height / 2
-                radiusX: width / 2
-                radiusY: height / 2
+                radiusX: (width / 2) - 2
+                radiusY: (height / 2) - 2
                 startAngle: 0
                 sweepAngle: 360
             }
@@ -57,6 +62,7 @@ Item {
         width: parent.width
         height: parent.height
         anchors.centerIn: parent
+        antialiasing: true
         ShapePath {
             fillColor: "transparent"
             strokeColor: borderColor
@@ -65,8 +71,8 @@ Item {
                 id: borderPath
                 centerX: width / 2
                 centerY: height / 2
-                radiusX: width / 2
-                radiusY: height / 2
+                radiusX: (width / 2) - 2
+                radiusY: (height / 2) - 2
                 // to start on top
                 startAngle: -90
                 sweepAngle: 0
@@ -79,6 +85,7 @@ Item {
         width: parent.width
         height: parent.height
         anchors.centerIn: parent
+        antialiasing: true
         ShapePath {
             strokeColor: "darkgrey"
             strokeWidth: 3

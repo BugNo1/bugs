@@ -11,6 +11,7 @@ Item {
     property int hitboxRadius: 76
     property int hitboxX: 0
     property int hitboxY: 0
+    property bool selfDestroy: false
 
     property int animationDuration: 0
     property int animationDurationMax: 10000
@@ -40,7 +41,11 @@ Item {
         running: true
         repeat: true
         onTriggered: {
-            moveBird()
+            if (selfDestroy) {
+                bird.destroy()
+            } else {
+                moveBird()
+            }
         }
     }
 

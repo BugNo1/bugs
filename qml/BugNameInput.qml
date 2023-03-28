@@ -1,6 +1,7 @@
 import QtQuick 2.15
 
 Item {
+    id: bugNameInput
     width: parent.width
     height: 35
     anchors.horizontalCenter: parent.horizontalCenter
@@ -17,8 +18,14 @@ Item {
         }
     }
 
+    // should not be necessary for Qt 6.X
+    // https://bugreports.qt.io/browse/QTBUG-29676
+    Component.onDestruction: {
+        bugModel.nameChanged.disconnect(changeBugName)
+    }
+
     function changeBugName() {
-        bugNameInput.text = bugModel.name
+        nameInput.text = bugModel.name
     }
 
     Image {
@@ -44,10 +51,13 @@ Item {
         anchors.leftMargin: 25
         anchors.rightMargin: 25
 
-        // must have minimun length or focus must be set by clicking next to the textinout field
-        // currently the textfield can't be edited when it's empty
+        MouseArea {
+            anchors.fill: parent
+            onClicked: { nameInput.focus = true }
+        }
+
         TextInput {
-            id: bugNameInput
+            id: nameInput
             anchors.centerIn: parent
             font.family: "Tomson Talks"
             font.pixelSize: 30

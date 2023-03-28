@@ -35,6 +35,7 @@ Window {
             var bugModel = Qt.createQmlObject('import BugModel 1.0; BugModel {}', bug1, "bugmodel1")
             bug1.bugModel = bugModel
             bug1LifeIndicator.bugModel = bugModel
+            bugModel.enabledChanged.connect(checkGameEnd)
         }
     }
 
@@ -52,6 +53,7 @@ Window {
             var bugModel = Qt.createQmlObject('import BugModel 1.0; BugModel {}', bug2, "bugmodel2")
             bug2.bugModel = bugModel
             bug2LifeIndicator.bugModel = bugModel
+            bugModel.enabledChanged.connect(checkGameEnd)
         }
     }
 
@@ -71,7 +73,7 @@ Window {
         anchors.bottom: parent.bottom
         // stay on top of everything
         z: 1000
-        anchors.margins: 25
+        anchors.bottomMargin: 25
         LifeIndicator {
             id: bug1LifeIndicator
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
@@ -99,9 +101,10 @@ Window {
     property double startTime: 0
     property int currentLevel: 0
     property int levelDuration: 30
-    property int bugsMaxLives: 3
+    property int bugsMaxLives: 1
 
     signal signalResetGame()
+    signal signalStartCountdown()
     signal signalStartGame()
     signal signalStopGame()
 
@@ -113,10 +116,18 @@ Window {
         DSM.State {
             id: resetState
             DSM.SignalTransition {
+                targetState: countdownState
+                signal: signalStartCountdown
+            }
+            onEntered: resetGame()
+        }
+        DSM.State {
+            id: countdownState
+            DSM.SignalTransition {
                 targetState: gameRunningState
                 signal: signalStartGame
             }
-            onEntered: resetGame()
+            onEntered: startCountdown()
         }
         DSM.State {
             id: gameRunningState
@@ -138,9 +149,6 @@ Window {
 
     function resetGame() {
         console.log("Resetting game...")
-        // stop all birds (maybe)
-        // remove all birds from birds list
-        // maybe put in names - when none are set
 
         currentLevel = 1
         timeLifeIndicator.setLevel(currentLevel)
@@ -159,15 +167,19 @@ Window {
         overlay = Qt.createQmlObject('GameStartOverlay {}', mainWindow, "overlay")
         overlay.bug1Model = bugs[0].bugModel
         overlay.bug2Model = bugs[1].bugModel
-        overlay.signalStartGame = signalStartGame
+        overlay.signalStart = signalStartCountdown
+    }
+
+    function startCountdown() {
+        console.log("Starting countdown...")
+
+        overlay = Qt.createQmlObject('CountdownOverlay {}', mainWindow, "overlay")
+        overlay.signalStart = signalStartGame
     }
 
     function startGame() {
         console.log("Starting game...")
 
-        // add countdown before starting (countdown state?)
-
-        overlay.destroy()
         startTime = new Date().getTime()
         gameTimer.start()
         collisionDetectionTimer.start()
@@ -178,20 +190,30 @@ Window {
         console.log("Stopping game...")
         // stop game timer
         // stop level timer
-        // stop all birds
+        // stop all birds (send signal to birds to self-destruct after moving off screen)
+        // empty bird list
         // show winner
         // show highscore list... highlight new entries
         // two buttons: 1. Nochmal, 2. Schluss für heute oder Feierabend
 
         gameTimer.stop()
         collisionDetectionTimer.stop()
+
+        // stop all birds
+        for (var birdIndex = 0; birdIndex < birds.length; birdIndex++) {
+            birds[birdIndex].selfDestroy = true
+        }
+        // empty list...
+
+        overlay = Qt.createQmlObject('GameEndOverlay {}', mainWindow, "overlay")
+        overlay.signalStart = signalResetGame
     }
 
     Timer {
         id: gameTimer
-        interval: 100;
-        running: false;
-        repeat: true;
+        interval: 100
+        running: false
+        repeat: true
         onTriggered: {
             var currentTime = new Date().getTime() - startTime
             updateClock(currentTime)
@@ -223,12 +245,18 @@ Window {
         birds.push(newBird)
     }
 
+    function checkGameEnd() {
+        if (! bugs[0].bugModel.enabled && ! bugs[1].bugModel.enabled) {
+            signalStopGame()
+        }
+    }
+
     // collision detection
     Timer {
         id: collisionDetectionTimer
-        interval: 20;
-        running: false;
-        repeat: true;
+        interval: 20
+        running: false
+        repeat: true
         onTriggered: {
             detectAllCollision()
         }
