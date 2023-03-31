@@ -6,7 +6,10 @@ QT += quick gamepad
 
 SOURCES += \
         bugmodel.cpp \
-        main.cpp
+        gamedata.cpp \
+        main.cpp \
+        player.cpp \
+        player_tablemodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -24,5 +27,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 include ($$PWD/QJoysticks/QJoysticks.pri)
 
 HEADERS += \
-    bugmodel.h
+    bugmodel.h \
+    gamedata.h \
+    player.h \
+    player_tablemodel.h
 
+QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/media/gif) $$shell_path($$OUT_PWD/)

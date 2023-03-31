@@ -17,11 +17,16 @@
         <file>media/hit.wav</file>
         <file>media/bird-eating.wav</file>
         <file>qml/GameStartOverlay.qml</file>
-        <file>qml/BugNameInput.qml</file>
+        <file>qml/PlayerNameInput.qml</file>
         <file>qml/CrossButton.qml</file>
         <file>qml/CountdownOverlay.qml</file>
         <file>media/countdown.wav</file>
         <file>media/countdown-end.wav</file>
         <file>qml/GameEndOverlay.qml</file>
+        <file>media/highscore.png</file>
+        <file>media/winner.png</file>
+        <file>media/highscore.wav</file>
+        <file>media/win.wav</file>
+        <file>media/highscore-music.mp3</file>
     </qresource>
 </RCC>

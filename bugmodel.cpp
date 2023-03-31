@@ -5,38 +5,19 @@
 BugModel::BugModel(QObject *parent)
     : QObject(parent)
 {
-    setup();
-}
-
-BugModel::BugModel(const QString & name, QObject *parent)
-    : QObject(parent), m_name(name)
-{
-    setup();
-}
-
-void BugModel::setup()
-{
     m_invincibleTimer = new QTimer(this);
     m_invincibleTimer->setSingleShot(true);
     connect(m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
-    m_activeBugCollision = false;
-    m_activeBirdCollision = false;
-
-    // TODO: load from file
-    setName("TestName");
 }
 
-QString BugModel::name() const
+void BugModel::initialize(int maxLives)
 {
-    return m_name;
-}
-
-void BugModel::setName(const QString &name)
-{
-    if (name != m_name) {
-        m_name = name;
-        emit nameChanged();
-    }
+    setMaxLives(maxLives);
+    setLives(maxLives);
+    setInvincible(false);
+    setActiveBugCollision(false);
+    setActiveBirdCollision(false);
+    setEnabled(true);
 }
 
 int BugModel::maxLives()
@@ -76,13 +57,11 @@ void BugModel::updateLives(int change)
     int newLives = m_lives + change;
     if ((newLives >= 0) && (newLives <= m_maxLives))
     {
-        if (newLives < m_lives)
-        {
+        if (newLives < m_lives) {
             startInvincibility(5000);
             emit lifeLost();
         }
-        else if (newLives > m_lives)
-        {
+        else if (newLives > m_lives) {
             emit lifeGained();
         }
         setLives(newLives);
@@ -137,7 +116,6 @@ void BugModel::bugCollision(int bugId, bool colliding)
         setActiveBugCollision(false);
     }
 }
-
 
 bool BugModel::activeBirdCollision()
 {

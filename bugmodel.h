@@ -9,7 +9,6 @@ class BugModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(int maxLives READ maxLives WRITE setMaxLives NOTIFY maxLivesChanged)
     Q_PROPERTY(int lives READ lives WRITE setLives NOTIFY livesChanged)
     Q_PROPERTY(bool invincible READ invincible WRITE setInvincible NOTIFY invincibleChanged)
@@ -19,10 +18,8 @@ class BugModel : public QObject
 
 public:
     BugModel(QObject *parent=0);
-    BugModel(const QString &name, QObject *parent=0);
 
-    QString name() const;
-    void setName(const QString &name);
+    Q_INVOKABLE void initialize(int maxLives);
 
     int maxLives();
     void setMaxLives(int maxLives);
@@ -47,7 +44,6 @@ public:
     void setEnabled(bool enabled);
 
 signals:
-    void nameChanged();
     void maxLivesChanged();
     void livesChanged();
     void lifeLost();
@@ -61,9 +57,6 @@ public slots:
     void invincibleTimerSlot();
 
 private:
-    void setup();
-
-    QString m_name;
     int m_maxLives;
     int m_lives;
     bool m_invincible;

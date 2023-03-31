@@ -7,8 +7,6 @@ Item {
     height: 360
     anchors.centerIn: parent
 
-    property var bug1Model
-    property var bug2Model
     property var signalStart
 
     function checkStart() {
@@ -37,18 +35,18 @@ Item {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    BugNameInput {
-        id: bug1Input
-        bugModel: bug1Model
+    PlayerNameInput {
+        id: player1Input
+        player: GameData.player1
         anchors.top: headline.bottom
         anchors.margins: 25
     }
 
-    BugNameInput {
-        id: bug2Input
+    PlayerNameInput {
+        id: player2Input
         sourceFile: "../media/ladybug-middle-blue.png"
-        bugModel: bug2Model
-        anchors.top: bug1Input.bottom
+        player: GameData.player2
+        anchors.top: player1Input.bottom
         anchors.margins: 25
     }
 
@@ -59,7 +57,7 @@ Item {
         font.pixelSize: 30
         color: "white"
         width: parent.width
-        anchors.top: bug2Input.bottom
+        anchors.top: player2Input.bottom
         anchors.margins: 25
         horizontalAlignment: Text.AlignHCenter
     }

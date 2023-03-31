@@ -16,6 +16,11 @@ Window {
     property var birds: []
     property var overlay
 
+    Component.onCompleted: {
+        BugModel1.enabledChanged.connect(onBug1EnabledChanged)
+        BugModel2.enabledChanged.connect(onBug2EnabledChanged)
+    }
+
     Image {
         id: background
         source: "../media/bg.jpg"
@@ -24,6 +29,7 @@ Window {
 
     Bug {
         id: bug1
+        bugModel: BugModel1
         Connections {
             target: QJoysticks
             function onAxisChanged() {
@@ -31,16 +37,11 @@ Window {
                 bug1.yAxisValue = filterAxis(QJoysticks.getAxis(0, 1))
             }
         }
-        Component.onCompleted: {
-            var bugModel = Qt.createQmlObject('import BugModel 1.0; BugModel {}', bug1, "bugmodel1")
-            bug1.bugModel = bugModel
-            bug1LifeIndicator.bugModel = bugModel
-            bugModel.enabledChanged.connect(checkGameEnd)
-        }
     }
 
     Bug {
         id: bug2
+        bugModel: BugModel2
         sourceFiles: ["../media/ladybug-up-blue.png", "../media/ladybug-middle-blue.png", "../media/ladybug-down-blue.png" ]
         Connections {
             target: QJoysticks
@@ -48,12 +49,6 @@ Window {
                 bug2.xAxisValue = filterAxis(QJoysticks.getAxis(1, 0))
                 bug2.yAxisValue = filterAxis(QJoysticks.getAxis(1, 1))
             }
-        }
-        Component.onCompleted: {
-            var bugModel = Qt.createQmlObject('import BugModel 1.0; BugModel {}', bug2, "bugmodel2")
-            bug2.bugModel = bugModel
-            bug2LifeIndicator.bugModel = bugModel
-            bugModel.enabledChanged.connect(checkGameEnd)
         }
     }
 
@@ -76,6 +71,8 @@ Window {
         anchors.bottomMargin: 25
         LifeIndicator {
             id: bug1LifeIndicator
+            bugModel: BugModel1
+            player: GameData.player1
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         TimeLevelIndicator {
@@ -84,8 +81,10 @@ Window {
         }
         LifeIndicator {
             id: bug2LifeIndicator
-            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+            bugModel: BugModel2
+            player: GameData.player2
             sourceFile: "../media/ladybug-middle-blue.png"
+            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
     }
 
@@ -97,11 +96,13 @@ Window {
     //    when hit, remove one bug from lives indicator
     //    play sound when bird starts a fly over
     // 3. when both bugs have no life left, stop all birds, show the winner and the level and the time for both
+    // maybe play sound on level update
 
     property double startTime: 0
+    property double currentTime: 0
     property int currentLevel: 0
     property int levelDuration: 30
-    property int bugsMaxLives: 1
+    property int bugsMaxLives: 3
 
     signal signalResetGame()
     signal signalStartCountdown()
@@ -151,28 +152,23 @@ Window {
         console.log("Resetting game...")
 
         currentLevel = 1
+        currentTime = 0
         timeLifeIndicator.setLevel(currentLevel)
         timeLifeIndicator.setTime("00:00")
 
-        // initialize bug models
-        for (var bugIndex = 0; bugIndex < bugs.length; bugIndex++) {
-            bugs[bugIndex].bugModel.maxLives = bugsMaxLives
-            bugs[bugIndex].bugModel.lives = bugsMaxLives
-            bugs[bugIndex].bugModel.invincible = false
-            bugs[bugIndex].bugModel.activeBugCollision = false
-            bugs[bugIndex].bugModel.activeBirdCollision = false
-            bugs[bugIndex].bugModel.enabled = true
-        }
+        // initialize models
+        BugModel1.initialize(bugsMaxLives)
+        BugModel2.initialize(bugsMaxLives)
+        GameData.initialize()
 
         overlay = Qt.createQmlObject('GameStartOverlay {}', mainWindow, "overlay")
-        overlay.bug1Model = bugs[0].bugModel
-        overlay.bug2Model = bugs[1].bugModel
         overlay.signalStart = signalStartCountdown
     }
 
     function startCountdown() {
         console.log("Starting countdown...")
 
+        GameData.savePlayerNames()
         overlay = Qt.createQmlObject('CountdownOverlay {}', mainWindow, "overlay")
         overlay.signalStart = signalStartGame
     }
@@ -188,13 +184,8 @@ Window {
 
     function stopGame() {
         console.log("Stopping game...")
-        // stop game timer
-        // stop level timer
-        // stop all birds (send signal to birds to self-destruct after moving off screen)
-        // empty bird list
         // show winner
         // show highscore list... highlight new entries
-        // two buttons: 1. Nochmal, 2. Schluss für heute oder Feierabend
 
         gameTimer.stop()
         collisionDetectionTimer.stop()
@@ -203,7 +194,10 @@ Window {
         for (var birdIndex = 0; birdIndex < birds.length; birdIndex++) {
             birds[birdIndex].selfDestroy = true
         }
-        // empty list...
+        birds = []
+
+        GameData.updateHighscores()
+        GameData.saveHighscores()
 
         overlay = Qt.createQmlObject('GameEndOverlay {}', mainWindow, "overlay")
         overlay.signalStart = signalResetGame
@@ -215,17 +209,17 @@ Window {
         running: false
         repeat: true
         onTriggered: {
-            var currentTime = new Date().getTime() - startTime
-            updateClock(currentTime)
-            updateLevel(currentTime)
+            currentTime = new Date().getTime() - startTime
+            updateClock()
+            updateLevel()
         }
     }
 
-    function updateClock(currentTime: double) {
+    function updateClock() {
         timeLifeIndicator.setTime(getTimeString(currentTime))
     }
 
-    function updateLevel(currentTime: double) {
+    function updateLevel() {
         var newLevel = 1 + Math.floor(currentTime / 1000 / levelDuration)
         if (newLevel != currentLevel) {
             timeLifeIndicator.setLevel(newLevel)
@@ -245,8 +239,24 @@ Window {
         birds.push(newBird)
     }
 
+    function onBug1EnabledChanged() {
+        if (! BugModel1.enabled) {
+            GameData.player1.levelAchieved = currentLevel
+            GameData.player1.timeAchieved = currentTime
+        }
+        checkGameEnd()
+    }
+
+    function onBug2EnabledChanged() {
+        if (! BugModel2.enabled) {
+            GameData.player2.levelAchieved = currentLevel
+            GameData.player2.timeAchieved = currentTime
+        }
+        checkGameEnd()
+    }
+
     function checkGameEnd() {
-        if (! bugs[0].bugModel.enabled && ! bugs[1].bugModel.enabled) {
+        if (! BugModel1.enabled && ! BugModel2.enabled) {
             signalStopGame()
         }
     }

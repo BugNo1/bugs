@@ -8,6 +8,7 @@ Item {
     height: 50
 
     property var sourceFiles: ["../media/ladybug-up.png", "../media/ladybug-middle.png", "../media/ladybug-down.png" ]
+    property var bugModel
 
     // controller values - used as speed values for movement
     property real xAxisValue: 0
@@ -20,13 +21,11 @@ Item {
 
     property int sourceFilesIndex: 0
     property int timerCounter: 0
-    property var bugModel
 
-    onBugModelChanged: {
-        if (typeof bugModel !== "undefined") {
-            bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
-            bugModel.enabledChanged.connect(onBugEnabledChanged)
-        }
+    Component.onCompleted: {
+        bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
+        bugModel.enabledChanged.connect(onBugEnabledChanged)
+        setRandomPosition()
     }
 
     function onActiveBugCollisionChanged() {
@@ -44,10 +43,6 @@ Item {
             bugSound.stop()
             bug.visible = false
         }
-    }
-
-    Component.onCompleted: {
-        setRandomPosition()
     }
 
     function setRandomPosition() {
