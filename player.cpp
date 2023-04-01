@@ -19,6 +19,7 @@ void Player::initialize()
     setLevelAchieved(0);
     setTimeAchieved(0);
     setTimeAchievedText("00:00");
+    setInHighscoreList(false);
 }
 
 int Player::playerId()
@@ -76,5 +77,18 @@ void Player::setTimeAchievedText(const QString &timeText)
     if (timeText != m_timeText) {
         m_timeText = timeText;
         emit timeAchievedTextChanged();
+    }
+}
+
+bool Player::inHighscoreList()
+{
+    return m_inHighscoreList;
+}
+
+void Player::setInHighscoreList(bool inHighscoreList)
+{
+    if (inHighscoreList != m_inHighscoreList) {
+        m_inHighscoreList = inHighscoreList;
+        emit inHighscoreListChanged();
     }
 }

@@ -25,9 +25,10 @@ public:
     Q_INVOKABLE void savePlayerNames();
 
     void loadHighscores();
+    Q_INVOKABLE void saveHighscores();
     Q_INVOKABLE void updateHighscores();
     void updateHighscoresWithPlayer(Player *player);
-    Q_INVOKABLE void saveHighscores();
+    void resetInHighscoreList();
 
     Player* player1();
     Player* player2();

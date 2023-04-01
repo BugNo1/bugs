@@ -18,7 +18,6 @@ Item {
         bugModel.maxLivesChanged.connect(onMaxLivesChanged)
         bugModel.livesChanged.connect(onLivesChanged)
         bugModel.lifeLost.connect(onLifeLost)
-        bugModel.lifeGained.connect(onLifeGained)
     }
 
     function onMaxLivesChanged() {
@@ -44,10 +43,6 @@ Item {
         birdEating.source = ""
         birdEating.source = "../media/bird-eating.wav"
         birdEating.play()
-    }
-
-    function onLifeGained() {
-        // play sound for gaining life
     }
 
     Text {

@@ -28,5 +28,11 @@
         <file>media/highscore.wav</file>
         <file>media/win.wav</file>
         <file>media/highscore-music.mp3</file>
+        <file>media/bird.wav</file>
+        <file>media/invincible.wav</file>
+        <file>media/item-drop.wav</file>
+        <file>media/life-gained.wav</file>
+        <file>media/extra-life.png</file>
+        <file>media/protection.png</file>
     </qresource>
 </RCC>

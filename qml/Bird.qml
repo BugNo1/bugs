@@ -102,6 +102,11 @@ Item {
 
         // start animation
         birdMovement.running = true
+
+        // play sound
+        birdSound.source = ""
+        birdSound.source = "../media/bird.wav"
+        birdSound.play()
     }
 
     function getRandomPosition(quadrant) {
@@ -193,6 +198,11 @@ Item {
         id: birdImage
         anchors.fill: parent
         source: "../media/bird.png"
+    }
+
+    Audio {
+        id: birdSound
+        source: "../media/bird.wav"
     }
 
     ParallelAnimation {

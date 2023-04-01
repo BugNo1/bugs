@@ -32,6 +32,7 @@ void GameData::initialize()
     m_player1->initialize();
     m_player2->initialize();
     m_newHighscore = false;
+    resetInHighscoreList();
 }
 
 void GameData::loadPlayerNames()
@@ -107,34 +108,6 @@ void GameData::loadHighscores()
     }
 }
 
-void GameData::updateHighscores()
-{
-    updateHighscoresWithPlayer(m_player1);
-    updateHighscoresWithPlayer(m_player2);
-}
-
-void GameData::updateHighscoresWithPlayer(Player *player)
-{
-    int index = 0;
-    for (index = 0; index < m_highscores.length(); index++) {
-        if (player->timeAchieved() > m_highscores[index]->timeAchieved()) {
-            break;
-        }
-    }
-
-    Player *newPlayer = new Player();
-    newPlayer->setName(player->name());
-    newPlayer->setTimeAchieved(player->timeAchieved());
-    newPlayer->setLevelAchieved(player->levelAchieved());
-
-    m_highscores.insert(index, newPlayer);
-    m_highscores.removeAt(m_highscores.length() - 1);
-
-    if (index == 0) {
-        m_newHighscore = true;
-    }
-}
-
 void GameData::saveHighscores()
 {
     QFile file(m_highscoresFilePath);
@@ -152,6 +125,44 @@ void GameData::saveHighscores()
             }
         }
         file.close();
+    }
+}
+
+void GameData::updateHighscores()
+{
+    updateHighscoresWithPlayer(m_player1);
+    updateHighscoresWithPlayer(m_player2);
+}
+
+void GameData::updateHighscoresWithPlayer(Player *player)
+{
+    int index = 0;
+    for (index = 0; index < m_highscores.length(); index++) {
+        if (player->timeAchieved() > m_highscores[index]->timeAchieved()) {
+            break;
+        }
+    }
+
+    if (index < m_highscores.length()) {
+        Player *newPlayer = new Player();
+        newPlayer->setName(player->name());
+        newPlayer->setTimeAchieved(player->timeAchieved());
+        newPlayer->setLevelAchieved(player->levelAchieved());
+        newPlayer->setInHighscoreList(true);
+
+        m_highscores.insert(index, newPlayer);
+        m_highscores.removeAt(m_highscores.length() - 1);
+    }
+
+    if (index == 0) {
+        m_newHighscore = true;
+    }
+}
+
+void GameData::resetInHighscoreList()
+{
+    for (int index = 0; index < m_highscores.length(); index++) {
+        m_highscores[index]->setInHighscoreList(false);
     }
 }
 

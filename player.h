@@ -12,6 +12,7 @@ class Player : public QObject
     Q_PROPERTY(int levelAchieved READ levelAchieved WRITE setLevelAchieved NOTIFY levelAchievedChanged)
     Q_PROPERTY(double timeAchieved READ timeAchieved WRITE setTimeAchieved NOTIFY timeAchievedChanged)
     Q_PROPERTY(QString timeAchievedText READ timeAchievedText WRITE setTimeAchievedText NOTIFY timeAchievedTextChanged)
+    Q_PROPERTY(bool inHighscoreList READ inHighscoreList WRITE setInHighscoreList NOTIFY inHighscoreListChanged)
 
 public:
     Player(QObject *parent=0);
@@ -32,12 +33,15 @@ public:
 
     QString timeAchievedText() const;
     void setTimeAchievedText(const QString &timeText);
+    bool inHighscoreList();
+    void setInHighscoreList(bool inHighscoreList);
 
 signals:
     void nameChanged();
     void levelAchievedChanged();
     void timeAchievedChanged();
     void timeAchievedTextChanged();
+    void inHighscoreListChanged();
 
 private:
     int m_playerId;
@@ -45,6 +49,7 @@ private:
     int m_level;
     double m_time;
     QString m_timeText;
+    bool m_inHighscoreList;
 };
 
 #endif // PLAYER_H

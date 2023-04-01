@@ -102,7 +102,7 @@ Window {
     property double currentTime: 0
     property int currentLevel: 0
     property int levelDuration: 30
-    property int bugsMaxLives: 3
+    property int bugsMaxLives: 1
 
     signal signalResetGame()
     signal signalStartCountdown()

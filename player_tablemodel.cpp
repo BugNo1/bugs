@@ -52,9 +52,11 @@ QVariant PlayerTableModel::data(const QModelIndex &index, int role) const
         }
     }
 
-    // add gold color when item is new in list
     else if (role == ColorRole) {
-        if (index.row() % 2 == 0) {
+        if (m_playerData->at(index.row())->inHighscoreList()) {
+            return "gold";
+        }
+        else if (index.row() % 2 == 0) {
             return "lavender";
         }
         return "white";
