@@ -49,6 +49,7 @@ signals:
     void lifeLost();
     void lifeGained();
     void invincibleChanged();
+    void invincibilityEndWarning();
     void activeBugCollisionChanged();
     void activeBirdCollisionChanged();
     void enabledChanged();
@@ -66,6 +67,8 @@ private:
     int m_birdId;
     bool m_enabled;
     QTimer *m_invincibleTimer;
+    int m_invincibilityEndWarningDuration;
+    bool m_invincibilityEndWarning;
 };
 
 #endif // BUGMODEL_H

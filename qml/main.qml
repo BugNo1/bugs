@@ -14,6 +14,7 @@ Window {
 
     property var bugs: [bug1, bug2]
     property var birds: []
+    property var collectibleItems: [itemInvincibility]
     property var overlay
 
     Component.onCompleted: {
@@ -25,6 +26,11 @@ Window {
         id: background
         source: "../media/bg.jpg"
         anchors.fill: parent
+    }
+
+    ItemInvincibility {
+        id: itemInvincibility
+        itemActive: false
     }
 
     Bug {
@@ -151,6 +157,8 @@ Window {
     function resetGame() {
         console.log("Resetting game...")
 
+        // TODO: enable mouse cursor
+
         currentLevel = 1
         currentTime = 0
         timeLifeIndicator.setLevel(currentLevel)
@@ -168,6 +176,8 @@ Window {
     function startCountdown() {
         console.log("Starting countdown...")
 
+        // TODO: disable mouse cursor
+
         GameData.savePlayerNames()
         overlay = Qt.createQmlObject('CountdownOverlay {}', mainWindow, "overlay")
         overlay.signalStart = signalStartGame
@@ -175,6 +185,10 @@ Window {
 
     function startGame() {
         console.log("Starting game...")
+
+        for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
+            collectibleItems[itemIndex].itemActive = true
+        }
 
         startTime = new Date().getTime()
         gameTimer.start()
@@ -195,6 +209,10 @@ Window {
             birds[birdIndex].selfDestroy = true
         }
         birds = []
+
+        for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
+            collectibleItems[itemIndex].itemActive = false
+        }
 
         GameData.updateHighscores()
         GameData.saveHighscores()
@@ -286,6 +304,18 @@ Window {
             for (var birdIndex = 0; birdIndex < birds.length; birdIndex++) {
                 colliding = detectCollision(bugs[bugIndex], birds[birdIndex])
                 bugs[bugIndex].bugModel.birdCollision(birdIndex, colliding)
+            }
+        }
+
+        // bug vs. item collision
+        for (bugIndex = 0; bugIndex < bugs.length; bugIndex++) {
+            for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
+                if (collectibleItems[itemIndex].visible) {
+                    colliding = detectCollision(bugs[bugIndex], collectibleItems[itemIndex])
+                    if (colliding) {
+                        collectibleItems[itemIndex].hit(bugs[bugIndex].bugModel)
+                    }
+                }
             }
         }
     }

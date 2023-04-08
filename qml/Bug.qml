@@ -25,6 +25,7 @@ Item {
     Component.onCompleted: {
         bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
         bugModel.enabledChanged.connect(onBugEnabledChanged)
+        bugModel.invincibilityEndWarning.connect(onInvincibilityEndWarning)
         setRandomPosition()
     }
 
@@ -45,9 +46,13 @@ Item {
         }
     }
 
+    function onInvincibilityEndWarning() {
+        invincibilityShapePath.strokeColor = "red"
+    }
+
     function setRandomPosition() {
-        x = (Math.random() * (mainWindow.width - 200)) + 100
-        y = (Math.random() * (mainWindow.height - 200)) + 100
+        x = Math.round(Math.random() * (mainWindow.width - 200)) + 100
+        y = Math.round(Math.random() * (mainWindow.height - 300)) + 100
         hitboxX = x + width / 2
         hitboxY = y + height / 2
     }
@@ -178,7 +183,14 @@ Item {
         height: 56
         anchors.centerIn: parent
         visible: bugModel.invincible
+        onVisibleChanged: {
+            if (visible) {
+                invincibilityShapePath.strokeColor = "gold"
+            }
+        }
+
         ShapePath {
+            id: invincibilityShapePath
             fillColor: "transparent"
             strokeColor: "gold"
             strokeWidth: 3

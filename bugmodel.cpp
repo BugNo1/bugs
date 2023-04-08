@@ -7,6 +7,8 @@ BugModel::BugModel(QObject *parent)
 {
     m_invincibleTimer = new QTimer(this);
     m_invincibleTimer->setSingleShot(true);
+    m_invincibilityEndWarningDuration = 3000;
+    m_invincibilityEndWarning = false;
     connect(m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
 }
 
@@ -84,13 +86,20 @@ void BugModel::setInvincible(bool invincible)
 void BugModel::startInvincibility(int duration)
 {
     setInvincible(true);
-    m_invincibleTimer->start(duration);
+    m_invincibilityEndWarning = true;
+    m_invincibleTimer->start(duration - m_invincibilityEndWarningDuration);
 }
 
 void BugModel::invincibleTimerSlot()
 {
-    setInvincible(false);
-    setActiveBirdCollision(false);
+    if (m_invincibilityEndWarning) {
+        emit invincibilityEndWarning();
+        m_invincibleTimer->start(m_invincibilityEndWarningDuration);
+        m_invincibilityEndWarning = false;
+    } else {
+        setInvincible(false);
+        setActiveBirdCollision(false);
+    }
 }
 
 bool BugModel::activeBugCollision()
