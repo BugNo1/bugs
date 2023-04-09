@@ -14,7 +14,7 @@ Window {
 
     property var bugs: [bug1, bug2]
     property var birds: []
-    property var collectibleItems: [itemInvincibility]
+    property var collectibleItems: [itemInvincibility, itemExtraLife]
     property var overlay
 
     Component.onCompleted: {
@@ -30,6 +30,11 @@ Window {
 
     ItemInvincibility {
         id: itemInvincibility
+        itemActive: false
+    }
+
+    ItemExtraLife {
+        id: itemExtraLife
         itemActive: false
     }
 
@@ -108,7 +113,7 @@ Window {
     property double currentTime: 0
     property int currentLevel: 0
     property int levelDuration: 30
-    property int bugsMaxLives: 1
+    property int bugsMaxLives: 2
 
     signal signalResetGame()
     signal signalStartCountdown()

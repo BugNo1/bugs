@@ -35,5 +35,6 @@
         <file>media/extra-life.png</file>
         <file>media/protection.png</file>
         <file>qml/ItemInvincibility.qml</file>
+        <file>qml/ItemExtraLife.qml</file>
     </qresource>
 </RCC>
