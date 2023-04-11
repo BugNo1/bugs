@@ -113,7 +113,7 @@ Window {
     property double currentTime: 0
     property int currentLevel: 0
     property int levelDuration: 30
-    property int bugsMaxLives: 2
+    property int bugsMaxLives: 3
 
     signal signalResetGame()
     signal signalStartCountdown()
@@ -314,11 +314,13 @@ Window {
 
         // bug vs. item collision
         for (bugIndex = 0; bugIndex < bugs.length; bugIndex++) {
-            for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
-                if (collectibleItems[itemIndex].visible) {
-                    colliding = detectCollision(bugs[bugIndex], collectibleItems[itemIndex])
-                    if (colliding) {
-                        collectibleItems[itemIndex].hit(bugs[bugIndex].bugModel)
+            if (bugs[bugIndex].bugModel.enabled) {
+                for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
+                    if (collectibleItems[itemIndex].visible) {
+                        colliding = detectCollision(bugs[bugIndex], collectibleItems[itemIndex])
+                        if (colliding) {
+                            collectibleItems[itemIndex].hit(bugs[bugIndex].bugModel)
+                        }
                     }
                 }
             }

@@ -5,11 +5,11 @@
 BugModel::BugModel(QObject *parent)
     : QObject(parent)
 {
-    m_invincibleTimer = new QTimer(this);
-    m_invincibleTimer->setSingleShot(true);
+    m_invincibleTimer.setSingleShot(true);
+    connect(&m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
+
     m_invincibilityEndWarningDuration = 3000;
     m_invincibilityEndWarning = false;
-    connect(m_invincibleTimer, SIGNAL(timeout()), this, SLOT(invincibleTimerSlot()));
 }
 
 void BugModel::initialize(int maxLives)
@@ -87,14 +87,14 @@ void BugModel::startInvincibility(int duration)
 {
     setInvincible(true);
     m_invincibilityEndWarning = true;
-    m_invincibleTimer->start(duration - m_invincibilityEndWarningDuration);
+    m_invincibleTimer.start(duration - m_invincibilityEndWarningDuration);
 }
 
 void BugModel::invincibleTimerSlot()
 {
     if (m_invincibilityEndWarning) {
         emit invincibilityEndWarning();
-        m_invincibleTimer->start(m_invincibilityEndWarningDuration);
+        m_invincibleTimer.start(m_invincibilityEndWarningDuration);
         m_invincibilityEndWarning = false;
     } else {
         setInvincible(false);

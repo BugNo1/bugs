@@ -8,6 +8,7 @@ SOURCES += \
         bugmodel.cpp \
         gamedata.cpp \
         main.cpp \
+        mouse_event_filter.cpp \
         player.cpp \
         player_tablemodel.cpp
 
@@ -29,6 +30,7 @@ include ($$PWD/QJoysticks/QJoysticks.pri)
 HEADERS += \
     bugmodel.h \
     gamedata.h \
+    mouse_event_filter.h \
     player.h \
     player_tablemodel.h
 

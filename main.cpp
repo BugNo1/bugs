@@ -6,6 +6,7 @@
 #include "bugmodel.h"
 #include "gamedata.h"
 #include "player_tablemodel.h"
+#include "mouse_event_filter.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("gifPath", gifpath);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+
+    MouseEventFilter* mouseEventFilter = new MouseEventFilter();
+    app.installEventFilter(mouseEventFilter);
 
     return app.exec();
 }

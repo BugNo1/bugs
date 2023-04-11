@@ -66,7 +66,7 @@ private:
     int m_bugId;
     int m_birdId;
     bool m_enabled;
-    QTimer *m_invincibleTimer;
+    QTimer m_invincibleTimer;
     int m_invincibilityEndWarningDuration;
     bool m_invincibilityEndWarning;
 };
