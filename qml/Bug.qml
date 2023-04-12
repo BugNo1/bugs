@@ -37,6 +37,7 @@ Item {
 
     function onBugEnabledChanged() {
         if (bugModel.enabled) {
+            setRandomPosition()
             animationTimer.running = true
             bug.visible = true
         } else {
@@ -52,7 +53,7 @@ Item {
 
     function setRandomPosition() {
         x = Math.round(Math.random() * (mainWindow.width - 200)) + 100
-        y = Math.round(Math.random() * (mainWindow.height - 300)) + 100
+        y = Math.round(Math.random() * (mainWindow.height - 200)) + 100
         hitboxX = x + width / 2
         hitboxY = y + height / 2
     }
@@ -153,25 +154,6 @@ Item {
         }
     }
 
-    // enable for debugging
-    /*Shape {
-        width: 40
-        height: 40
-        anchors.centerIn: parent
-        ShapePath {
-            fillColor: "red"
-            strokeColor: "red"
-            PathAngleArc {
-                centerX: 20
-                centerY: 20
-                radiusX: hitboxRadius
-                radiusY: hitboxRadius
-                startAngle: 0
-                sweepAngle: 360
-            }
-        }
-    }*/
-
     Image {
         id: bugImage
         anchors.fill: parent
@@ -204,6 +186,25 @@ Item {
             }
         }
     }
+
+    // enable for debugging
+    /*Shape {
+        width: hitboxRadius * 2
+        height: hitboxRadius * 2
+        anchors.centerIn: parent
+        ShapePath {
+            fillColor: "transparent"
+            strokeColor: "red"
+            PathAngleArc {
+                centerX: hitboxRadius
+                centerY: hitboxRadius
+                radiusX: hitboxRadius
+                radiusY: hitboxRadius
+                startAngle: 0
+                sweepAngle: 360
+            }
+        }
+    }*/
 
     Audio {
         id: bugSound

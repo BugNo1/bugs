@@ -40,7 +40,7 @@ Item {
 
     function setRandomPosition() {
         x = Math.round(Math.random() * (mainWindow.width - 200)) + 100
-        y = Math.round(Math.random() * (mainWindow.height - 300)) + 100
+        y = Math.round(Math.random() * (mainWindow.height - 200)) + 100
         hitboxX = x + width / 2
         hitboxY = y + height / 2
     }

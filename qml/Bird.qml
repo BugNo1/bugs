@@ -8,7 +8,7 @@ Item {
     height: 444
 
     // used for collision detection (hitbox is a circle)
-    property int hitboxRadius: 76
+    property int hitboxRadius: 50
     property int hitboxX: 0
     property int hitboxY: 0
     property bool selfDestroy: false
@@ -174,6 +174,12 @@ Item {
         }
     }
 
+    Image {
+        id: birdImage
+        anchors.fill: parent
+        source: "../media/bird.png"
+    }
+
     // enable for debugging
     /*Shape {
         width: hitboxRadius * 2
@@ -181,7 +187,7 @@ Item {
         x: (bird.width / 2) - (width / 2)
         y: 0
         ShapePath {
-            fillColor: "red"
+            fillColor: "transparent"
             strokeColor: "red"
             PathAngleArc {
                 centerX: hitboxRadius
@@ -193,12 +199,6 @@ Item {
             }
         }
     }*/
-
-    Image {
-        id: birdImage
-        anchors.fill: parent
-        source: "../media/bird.png"
-    }
 
     Audio {
         id: birdSound
