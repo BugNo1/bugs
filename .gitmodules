@@ -4,3 +4,6 @@
 [submodule "common-media"]
 	path = common-media
 	url = git@github.com:BugNo1/common-media.git
+[submodule "common-qml"]
+	path = common-qml
+	url = git@github.com:BugNo1/common-qml.git
