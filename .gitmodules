@@ -1,3 +1,6 @@
 [submodule "QJoysticks"]
 	path = QJoysticks
 	url = git@github.com:alex-spataru/QJoysticks.git
+[submodule "common-media"]
+	path = common-media
+	url = git@github.com:BugNo1/common-media.git
