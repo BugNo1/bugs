@@ -100,15 +100,6 @@ Window {
     }
 
     // game logic
-    // states
-    // 1. initial state: two bugs, background, bug lives indicators, time: 00:00, level: 0, no bird
-    // 2. game state: green rectangle button was pressed on both controller,
-    //    timer running for clock, timer running for level-up, new bird on each new level,
-    //    when hit, remove one bug from lives indicator
-    //    play sound when bird starts a fly over
-    // 3. when both bugs have no life left, stop all birds, show the winner and the level and the time for both
-    // maybe play sound on level update
-
     property double startTime: 0
     property double currentTime: 0
     property int currentLevel: 0
@@ -162,8 +153,6 @@ Window {
     function resetGame() {
         console.log("Resetting game...")
 
-        // TODO: enable mouse cursor
-
         currentLevel = 1
         currentTime = 0
         timeLifeIndicator.setLevel(currentLevel)
@@ -180,8 +169,6 @@ Window {
 
     function startCountdown() {
         console.log("Starting countdown...")
-
-        // TODO: disable mouse cursor
 
         GameData.savePlayerNames()
         overlay = Qt.createQmlObject('CountdownOverlay {}', mainWindow, "overlay")
@@ -203,8 +190,6 @@ Window {
 
     function stopGame() {
         console.log("Stopping game...")
-        // show winner
-        // show highscore list... highlight new entries
 
         gameTimer.stop()
         collisionDetectionTimer.stop()

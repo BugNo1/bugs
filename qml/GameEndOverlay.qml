@@ -62,7 +62,7 @@ Item {
             height: parent.height / 2
             visible: false
             fillMode: Image.PreserveAspectFit
-            source: "../media/winner.png"
+            source: "../common-media/winner.png"
             anchors.top: parent.top
             anchors.topMargin: 25
             anchors.horizontalCenter: parent.horizontalCenter
@@ -248,7 +248,7 @@ Item {
 
     Audio {
         id: sound
-        source: "../media/win.wav"
+        source: "../common-media/win.wav"
     }
 
     function stateShowWinner() {
@@ -265,9 +265,9 @@ Item {
     }
 
     function stateShowHighScore() {
-        winnerImage.source = "../media/highscore.png"
+        winnerImage.source = "../common-media/highscore.png"
         winnerImageAnimation.start()
-        sound.source = "../media/highscore.wav"
+        sound.source = "../common-media/highscore.wav"
         sound.play()
         nextState = stateShowHighScoreAnimatedImage
         stateTimer.start()
@@ -277,7 +277,7 @@ Item {
         winnerImage.visible = false
         highscoreAnimatedImage.visible = true
         highscoreAnimatedImageSource = gifPath + "winner" + (Math.round(Math.random() * 24) + 1).toString().padStart(2, "0") + ".gif"
-        sound.source = "../media/highscore-music.mp3"
+        sound.source = "../common-media/highscore-music.mp3"
         sound.loops = Audio.Infinite
         sound.play()
         buttonLayout.visible = true

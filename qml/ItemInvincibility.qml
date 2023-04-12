@@ -23,7 +23,7 @@ Item {
             bugModel.startInvincibility(invincibilityDuration * 1000)
             itemInvincibility.visible = false
             hitSound.source = ""
-            hitSound.source = "../media/invincible.wav"
+            hitSound.source = "../common-media/invincible.wav"
             hitSound.play()
             startTimer()
         }
@@ -66,7 +66,7 @@ Item {
             setInvincibilityDuration()
             itemInvincibility.visible = true
             dropSound.source = ""
-            dropSound.source = "../media/item-drop.wav"
+            dropSound.source = "../common-media/item-drop.wav"
             dropSound.play()
         }
     }
@@ -74,7 +74,7 @@ Item {
     Image {
         id: itemImage
         anchors.fill: parent
-        source: "../media/protection.png"
+        source: "../common-media/protection.png"
     }
 
     Text {
@@ -91,11 +91,11 @@ Item {
 
     Audio {
         id: dropSound
-        source: "../media/item-drop.wav"
+        source: "../common-media/item-drop.wav"
     }
 
     Audio {
         id: hitSound
-        source: "../media/invincible.wav"
+        source: "../common-media/invincible.wav"
     }
 }

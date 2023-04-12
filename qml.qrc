@@ -20,21 +20,21 @@
         <file>qml/PlayerNameInput.qml</file>
         <file>qml/CrossButton.qml</file>
         <file>qml/CountdownOverlay.qml</file>
-        <file>media/countdown.wav</file>
-        <file>media/countdown-end.wav</file>
         <file>qml/GameEndOverlay.qml</file>
-        <file>media/highscore.png</file>
-        <file>media/winner.png</file>
-        <file>media/highscore.wav</file>
-        <file>media/win.wav</file>
-        <file>media/highscore-music.mp3</file>
         <file>media/bird.wav</file>
-        <file>media/invincible.wav</file>
-        <file>media/item-drop.wav</file>
-        <file>media/life-gained.wav</file>
-        <file>media/extra-life.png</file>
-        <file>media/protection.png</file>
         <file>qml/ItemInvincibility.qml</file>
         <file>qml/ItemExtraLife.qml</file>
+        <file>common-media/countdown-end.wav</file>
+        <file>common-media/countdown.wav</file>
+        <file>common-media/extra-life.png</file>
+        <file>common-media/highscore-music.mp3</file>
+        <file>common-media/highscore.png</file>
+        <file>common-media/highscore.wav</file>
+        <file>common-media/invincible.wav</file>
+        <file>common-media/item-drop.wav</file>
+        <file>common-media/life-gained.wav</file>
+        <file>common-media/protection.png</file>
+        <file>common-media/win.wav</file>
+        <file>common-media/winner.png</file>
     </qresource>
 </RCC>

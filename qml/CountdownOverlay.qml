@@ -44,7 +44,7 @@ Item {
                 countdownSound.play()
             } else if (currentNumber == 0) {
                 countdownText.text = "Start"
-                countdownSound.source = "../media/countdown-end.wav"
+                countdownSound.source = "../common-media/countdown-end.wav"
                 countdownSound.play()
             } else if (currentNumber < 0) {
                 signalStart()
@@ -56,6 +56,6 @@ Item {
 
     SoundEffect {
         id: countdownSound
-        source: "../media/countdown.wav"
+        source: "../common-media/countdown.wav"
     }
 }

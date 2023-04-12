@@ -21,7 +21,7 @@ Item {
             bugModel.updateLives(1)
             itemExtraLife.visible = false
             hitSound.source = ""
-            hitSound.source = "../media/life-gained.wav"
+            hitSound.source = "../common-media/life-gained.wav"
             hitSound.play()
             startTimer()
         }
@@ -59,7 +59,7 @@ Item {
             setRandomPosition()
             itemExtraLife.visible = true
             dropSound.source = ""
-            dropSound.source = "../media/item-drop.wav"
+            dropSound.source = "../common-media/item-drop.wav"
             dropSound.play()
         }
     }
@@ -67,16 +67,16 @@ Item {
     Image {
         id: itemImage
         anchors.fill: parent
-        source: "../media/extra-life.png"
+        source: "../common-media/extra-life.png"
     }
 
     Audio {
         id: dropSound
-        source: "../media/item-drop.wav"
+        source: "../common-media/item-drop.wav"
     }
 
     Audio {
         id: hitSound
-        source: "../media/life-gained.wav"
+        source: "../common-media/life-gained.wav"
     }
 }
