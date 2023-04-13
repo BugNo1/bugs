@@ -5,12 +5,12 @@ QT += quick gamepad
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        bugmodel.cpp \
-        gamedata.cpp \
-        main.cpp \
-        mouse_event_filter.cpp \
-        player.cpp \
-        player_tablemodel.cpp
+    bugmodel.cpp \
+    common-library/gamedata.cpp \
+    common-library/mouse_event_filter.cpp \
+    common-library/player.cpp \
+    common-library/player_tablemodel.cpp \
+    main.cpp \
 
 RESOURCES += qml.qrc
 
@@ -29,9 +29,9 @@ include ($$PWD/QJoysticks/QJoysticks.pri)
 
 HEADERS += \
     bugmodel.h \
-    gamedata.h \
-    mouse_event_filter.h \
-    player.h \
-    player_tablemodel.h
+    common-library/gamedata.h \
+    common-library/mouse_event_filter.h \
+    common-library/player.h \
+    common-library/player_tablemodel.h
 
 QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/common-media/gif) $$shell_path($$OUT_PWD/)

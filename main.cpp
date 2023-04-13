@@ -4,9 +4,9 @@
 
 #include <QJoysticks.h>
 #include "bugmodel.h"
-#include "gamedata.h"
-#include "player_tablemodel.h"
-#include "mouse_event_filter.h"
+#include "common-library/gamedata.h"
+#include "common-library/player_tablemodel.h"
+#include "common-library/mouse_event_filter.h"
 
 int main(int argc, char *argv[])
 {
