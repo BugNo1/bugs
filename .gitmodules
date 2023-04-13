@@ -7,3 +7,6 @@
 [submodule "common-qml"]
 	path = common-qml
 	url = git@github.com:BugNo1/common-qml.git
+[submodule "common-library"]
+	path = common-library
+	url = git@github.com:BugNo1/common-library.git
