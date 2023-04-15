@@ -91,7 +91,7 @@ Window {
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         TimeLevelIndicator {
-            id: timeLifeIndicator
+            id: timeLevelIndicator
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         LifeIndicator {
@@ -160,8 +160,8 @@ Window {
 
         currentLevel = 1
         currentTime = 0
-        timeLifeIndicator.setLevel(currentLevel)
-        timeLifeIndicator.setTime("00:00")
+        timeLevelIndicator.setLevel(currentLevel)
+        timeLevelIndicator.setTime(currentTime)
 
         // initialize models
         BugModel1.initialize(bugsMaxLives)
@@ -232,22 +232,16 @@ Window {
     }
 
     function updateClock() {
-        timeLifeIndicator.setTime(getTimeString(currentTime))
+        timeLevelIndicator.setTime(currentTime)
     }
 
     function updateLevel() {
         var newLevel = 1 + Math.floor(currentTime / 1000 / levelDuration)
         if (newLevel != currentLevel) {
-            timeLifeIndicator.setLevel(newLevel)
+            timeLevelIndicator.setLevel(newLevel)
             createBird()
             currentLevel = newLevel
         }
-    }
-
-    function getTimeString(time) {
-        var s = Math.floor((time / 1000) % 60).toString().padStart(2, "0")
-        var m = Math.floor(time / 1000 / 60).toString().padStart(2, "0")
-        return m + ":" + s
     }
 
     function createBird() {
@@ -280,7 +274,7 @@ Window {
     // collision detection
     Timer {
         id: collisionDetectionTimer
-        interval: 20
+        interval: 30
         running: false
         repeat: true
         onTriggered: {
