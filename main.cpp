@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     QString gifpath = "file://" + QCoreApplication::applicationDirPath() + "/gif/";
     engine.rootContext()->setContextProperty("gifPath", gifpath);
 
-    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
 
     MouseEventFilter* mouseEventFilter = new MouseEventFilter();
     app.installEventFilter(mouseEventFilter);

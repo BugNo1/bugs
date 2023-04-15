@@ -1,10 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/main.qml</file>
         <file>qml/Bug.qml</file>
         <file>qml/Bird.qml</file>
-        <file>qml/LifeIndicator.qml</file>
-        <file>qml/TimeLevelIndicator.qml</file>
         <file>media/bg.jpg</file>
         <file>media/bird.png</file>
         <file>media/bug-walk.wav</file>
@@ -16,14 +13,7 @@
         <file>media/ladybug-up-blue.png</file>
         <file>media/hit.wav</file>
         <file>media/bird-eating.wav</file>
-        <file>qml/GameStartOverlay.qml</file>
-        <file>qml/PlayerNameInput.qml</file>
-        <file>qml/CrossButton.qml</file>
-        <file>qml/CountdownOverlay.qml</file>
-        <file>qml/GameEndOverlay.qml</file>
         <file>media/bird.wav</file>
-        <file>qml/ItemInvincibility.qml</file>
-        <file>qml/ItemExtraLife.qml</file>
         <file>common-media/countdown-end.wav</file>
         <file>common-media/countdown.wav</file>
         <file>common-media/extra-life.png</file>
@@ -36,5 +26,15 @@
         <file>common-media/protection.png</file>
         <file>common-media/win.wav</file>
         <file>common-media/winner.png</file>
+        <file>qml/Main.qml</file>
+        <file>common-qml/CountdownOverlay.qml</file>
+        <file>common-qml/CrossButton.qml</file>
+        <file>common-qml/GameEndOverlay.qml</file>
+        <file>common-qml/GameStartOverlay.qml</file>
+        <file>common-qml/ItemExtraLife.qml</file>
+        <file>common-qml/ItemInvincibility.qml</file>
+        <file>common-qml/LifeIndicator.qml</file>
+        <file>common-qml/PlayerNameInput.qml</file>
+        <file>common-qml/TimeLevelIndicator.qml</file>
     </qresource>
 </RCC>

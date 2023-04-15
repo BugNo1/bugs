@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.15
 import QtMultimedia 5.15
 import QtQml.StateMachine 1.15 as DSM
 
+import "../common-qml"
+
 Window {
     id: mainWindow
     width: 1280
@@ -82,8 +84,10 @@ Window {
         anchors.bottomMargin: 25
         LifeIndicator {
             id: bug1LifeIndicator
-            bugModel: BugModel1
+            model: BugModel1
             player: GameData.player1
+            imageSource: "../media/ladybug-middle.png"
+            lifeLostAudioSource: "../media/bird-eating.wav"
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         TimeLevelIndicator {
@@ -92,9 +96,10 @@ Window {
         }
         LifeIndicator {
             id: bug2LifeIndicator
-            bugModel: BugModel2
+            model: BugModel2
             player: GameData.player2
-            sourceFile: "../media/ladybug-middle-blue.png"
+            imageSource: "../media/ladybug-middle-blue.png"
+            lifeLostAudioSource: "../media/bird-eating.wav"
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
     }
@@ -163,7 +168,10 @@ Window {
         BugModel2.initialize(bugsMaxLives)
         GameData.initialize()
 
-        overlay = Qt.createQmlObject('GameStartOverlay {}', mainWindow, "overlay")
+        overlay = Qt.createQmlObject('import "../common-qml"; GameStartOverlay {}', mainWindow, "overlay")
+        overlay.gameName = "BUGS"
+        overlay.player1ImageSource = "../media/ladybug-middle.png"
+        overlay.player2ImageSource = "../media/ladybug-middle-blue.png"
         overlay.signalStart = signalStartCountdown
     }
 
@@ -171,7 +179,7 @@ Window {
         console.log("Starting countdown...")
 
         GameData.savePlayerNames()
-        overlay = Qt.createQmlObject('CountdownOverlay {}', mainWindow, "overlay")
+        overlay = Qt.createQmlObject('import "../common-qml"; CountdownOverlay {}', mainWindow, "overlay")
         overlay.signalStart = signalStartGame
     }
 
@@ -207,7 +215,7 @@ Window {
         GameData.updateHighscores()
         GameData.saveHighscores()
 
-        overlay = Qt.createQmlObject('GameEndOverlay {}', mainWindow, "overlay")
+        overlay = Qt.createQmlObject('import "../common-qml"; GameEndOverlay {}', mainWindow, "overlay")
         overlay.signalStart = signalResetGame
     }
 
@@ -304,7 +312,18 @@ Window {
                     if (collectibleItems[itemIndex].visible) {
                         colliding = detectCollision(bugs[bugIndex], collectibleItems[itemIndex])
                         if (colliding) {
-                            collectibleItems[itemIndex].hit(bugs[bugIndex].bugModel)
+                            var condition
+                            var action
+                            if (itemIndex === 0) {
+                                // itemInvincibility
+                                condition = ! bugs[bugIndex].bugModel.invincible
+                                action = function func(duration) {bugs[bugIndex].bugModel.startInvincibility(duration * 1000)}
+                            } else if (itemIndex === 1) {
+                                // itemExtraLife
+                                condition = bugs[bugIndex].bugModel.lives !== bugs[bugIndex].bugModel.maxLives
+                                action = function func() {bugs[bugIndex].bugModel.updateLives(1)}
+                            }
+                            collectibleItems[itemIndex].hit(condition, action)
                         }
                     }
                 }
