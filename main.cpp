@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    engine.addImportPath("qrc:/");
+
     QJoysticks *instance = QJoysticks::getInstance();
     engine.rootContext()->setContextProperty("QJoysticks", instance);
 

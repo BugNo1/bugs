@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>Theme/qmldir</file>
+        <file>Theme/Theme.qml</file>
         <file>qml/Bug.qml</file>
         <file>qml/Bird.qml</file>
         <file>media/bg.jpg</file>
@@ -36,5 +38,6 @@
         <file>common-qml/LifeIndicator.qml</file>
         <file>common-qml/PlayerNameInput.qml</file>
         <file>common-qml/TimeLevelIndicator.qml</file>
+        <file>common-qml/GameLogic.qml</file>
     </qresource>
 </RCC>
