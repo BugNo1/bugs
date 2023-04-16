@@ -6,6 +6,7 @@ import QtMultimedia 5.15
 import QtQml.StateMachine 1.15 as DSM
 
 import "../common-qml"
+import "../common-qml/CommonFunctions.js" as Functions
 
 Window {
     id: mainWindow
@@ -46,8 +47,8 @@ Window {
         Connections {
             target: QJoysticks
             function onAxisChanged() {
-                bug1.xAxisValue = filterAxis(QJoysticks.getAxis(0, 0))
-                bug1.yAxisValue = filterAxis(QJoysticks.getAxis(0, 1))
+                bug1.xAxisValue = Functions.filterAxis(QJoysticks.getAxis(0, 0))
+                bug1.yAxisValue = Functions.filterAxis(QJoysticks.getAxis(0, 1))
             }
         }
     }
@@ -59,18 +60,10 @@ Window {
         Connections {
             target: QJoysticks
             function onAxisChanged() {
-                bug2.xAxisValue = filterAxis(QJoysticks.getAxis(1, 0))
-                bug2.yAxisValue = filterAxis(QJoysticks.getAxis(1, 1))
+                bug2.xAxisValue = Functions.filterAxis(QJoysticks.getAxis(1, 0))
+                bug2.yAxisValue = Functions.filterAxis(QJoysticks.getAxis(1, 1))
             }
         }
-    }
-
-    // filter out jitter and ensure that the value goes back to 0.0 after the joystick went back to middle position
-    function filterAxis(axisValue) {
-        if ((axisValue <= -0.07) || (axisValue >= 0.07)) {
-            return axisValue
-        }
-        return 0.0
     }
 
     RowLayout {
@@ -111,51 +104,15 @@ Window {
     property int levelDuration: 30
     property int bugsMaxLives: 3
 
-    signal signalResetGame()
-    signal signalStartCountdown()
-    signal signalStartGame()
-    signal signalStopGame()
-
-    DSM.StateMachine {
-        id: stateMachine
-        initialState: resetState
-        running: true
-
-        DSM.State {
-            id: resetState
-            DSM.SignalTransition {
-                targetState: countdownState
-                signal: signalStartCountdown
-            }
-            onEntered: resetGame()
-        }
-        DSM.State {
-            id: countdownState
-            DSM.SignalTransition {
-                targetState: gameRunningState
-                signal: signalStartGame
-            }
-            onEntered: startCountdown()
-        }
-        DSM.State {
-            id: gameRunningState
-            DSM.SignalTransition {
-                targetState: gameStoppedState
-                signal: signalStopGame
-            }
-            onEntered: startGame()
-        }
-        DSM.State {
-            id: gameStoppedState
-            DSM.SignalTransition {
-                targetState: resetState
-                signal: signalResetGame
-            }
-            onEntered: stopGame()
-        }
+    GameStateMachine {
+        id: gameStateMachine
+        gameResetAction: mainWindow.gameResetAction
+        gameCountdownAction: mainWindow.gameCountdownAction
+        gameStartAction: mainWindow.gameStartAction
+        gameStopAction: mainWindow.gameStopAction
     }
 
-    function resetGame() {
+    function gameResetAction() {
         console.log("Resetting game...")
 
         currentLevel = 1
@@ -172,31 +129,33 @@ Window {
         overlay.gameName = "BUGS"
         overlay.player1ImageSource = "../media/ladybug-middle.png"
         overlay.player2ImageSource = "../media/ladybug-middle-blue.png"
-        overlay.signalStart = signalStartCountdown
+        overlay.signalStart = gameStateMachine.signalStartCountdown
     }
 
-    function startCountdown() {
+    function gameCountdownAction() {
         console.log("Starting countdown...")
 
         GameData.savePlayerNames()
         overlay = Qt.createQmlObject('import "../common-qml"; CountdownOverlay {}', mainWindow, "overlay")
-        overlay.signalStart = signalStartGame
+        overlay.signalStart = gameStateMachine.signalStartGame
     }
 
-    function startGame() {
+    function gameStartAction() {
         console.log("Starting game...")
-
-        for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
-            collectibleItems[itemIndex].itemActive = true
-        }
 
         startTime = new Date().getTime()
         gameTimer.start()
         collisionDetectionTimer.start()
+
+        // activate collectible items
+        for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
+            collectibleItems[itemIndex].itemActive = true
+        }
+
         createBird()
     }
 
-    function stopGame() {
+    function gameStopAction() {
         console.log("Stopping game...")
 
         gameTimer.stop()
@@ -208,6 +167,7 @@ Window {
         }
         birds = []
 
+        // disable collectible items
         for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
             collectibleItems[itemIndex].itemActive = false
         }
@@ -216,7 +176,7 @@ Window {
         GameData.saveHighscores()
 
         overlay = Qt.createQmlObject('import "../common-qml"; GameEndOverlay {}', mainWindow, "overlay")
-        overlay.signalStart = signalResetGame
+        overlay.signalStart = gameStateMachine.signalResetGame
     }
 
     Timer {
@@ -267,7 +227,7 @@ Window {
 
     function checkGameEnd() {
         if (! BugModel1.enabled && ! BugModel2.enabled) {
-            signalStopGame()
+            gameStateMachine.signalStopGame()
         }
     }
 
@@ -285,7 +245,7 @@ Window {
     function detectAllCollision() {
         // bug vs. bug collision
         if (bugs[0].bugModel.enabled && bugs[1].bugModel.enabled) {
-            var colliding = detectCollision(bug1, bug2)
+            var colliding = Functions.detectCollisionCircleCircle(bug1, bug2)
             bugs[0].bugModel.bugCollision(1, colliding)
             // only one bug needs to know that a collision happened (so only one bug collision sound is played)
             //bugs[1].bugModel.bugCollision(0, colliding)
@@ -294,7 +254,7 @@ Window {
         // bug vs. bird collision
         for (var bugIndex = 0; bugIndex < bugs.length; bugIndex++) {
             for (var birdIndex = 0; birdIndex < birds.length; birdIndex++) {
-                colliding = detectCollision(bugs[bugIndex], birds[birdIndex])
+                colliding = Functions.detectCollisionCircleCircle(bugs[bugIndex], birds[birdIndex])
                 bugs[bugIndex].bugModel.birdCollision(birdIndex, colliding)
             }
         }
@@ -304,7 +264,7 @@ Window {
             if (bugs[bugIndex].bugModel.enabled) {
                 for (var itemIndex = 0; itemIndex < collectibleItems.length; itemIndex++) {
                     if (collectibleItems[itemIndex].visible) {
-                        colliding = detectCollision(bugs[bugIndex], collectibleItems[itemIndex])
+                        colliding = Functions.detectCollisionCircleCircle(bugs[bugIndex], collectibleItems[itemIndex])
                         if (colliding) {
                             var condition
                             var action
@@ -323,13 +283,5 @@ Window {
                 }
             }
         }
-    }
-
-    function detectCollision(item1, item2) {
-        var dx = item1.hitboxX - item2.hitboxX
-        var dy = item1.hitboxY - item2.hitboxY
-        var distance = Math.sqrt(dx * dx + dy * dy)
-        var colliding = distance < item1.hitboxRadius + item2.hitboxRadius
-        return colliding
     }
 }

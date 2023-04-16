@@ -38,6 +38,7 @@
         <file>common-qml/LifeIndicator.qml</file>
         <file>common-qml/PlayerNameInput.qml</file>
         <file>common-qml/TimeLevelIndicator.qml</file>
-        <file>common-qml/GameLogic.qml</file>
+        <file>common-qml/CommonFunctions.js</file>
+        <file>common-qml/GameStateMachine.qml</file>
     </qresource>
 </RCC>
