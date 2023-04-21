@@ -4,7 +4,6 @@
         <file>Theme/Theme.qml</file>
         <file>qml/Bug.qml</file>
         <file>qml/Bird.qml</file>
-        <file>media/bg.jpg</file>
         <file>media/bird.png</file>
         <file>media/bug-walk.wav</file>
         <file>media/ladybug-down.png</file>
@@ -40,5 +39,8 @@
         <file>common-qml/TimeLevelIndicator.qml</file>
         <file>common-qml/CommonFunctions.js</file>
         <file>common-qml/GameStateMachine.qml</file>
+        <file>common-media/speed-sign.png</file>
+        <file>common-media/impact.wav</file>
+        <file>common-qml/ItemSpeed.qml</file>
     </qresource>
 </RCC>

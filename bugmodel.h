@@ -15,6 +15,7 @@ class BugModel : public QObject
     Q_PROPERTY(bool activeBugCollision READ activeBugCollision WRITE setActiveBugCollision NOTIFY activeBugCollisionChanged)
     Q_PROPERTY(bool activeBirdCollision READ activeBirdCollision WRITE setActiveBirdCollision NOTIFY activeBirdCollisionChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(int speed READ speed WRITE setSpeed NOTIFY speedChanged)
 
 public:
     BugModel(QObject *parent=0);
@@ -43,6 +44,9 @@ public:
     bool enabled();
     void setEnabled(bool enabled);
 
+    int speed();
+    Q_INVOKABLE void setSpeed(int speed);
+
 signals:
     void maxLivesChanged();
     void livesChanged();
@@ -53,6 +57,7 @@ signals:
     void activeBugCollisionChanged();
     void activeBirdCollisionChanged();
     void enabledChanged();
+    void speedChanged();
 
 public slots:
     void invincibleTimerSlot();
@@ -69,6 +74,7 @@ private:
     QTimer m_invincibleTimer;
     int m_invincibilityEndWarningDuration;
     bool m_invincibilityEndWarning;
+    int m_speed;
 };
 
 #endif // BUGMODEL_H

@@ -43,6 +43,9 @@ int main(int argc, char *argv[])
     QString gifpath = "file://" + QCoreApplication::applicationDirPath() + "/gif/";
     engine.rootContext()->setContextProperty("gifPath", gifpath);
 
+    QString bgpath = "file://" + QCoreApplication::applicationDirPath() + "/bg/";
+    engine.rootContext()->setContextProperty("bgPath", bgpath);
+
     engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
 
     MouseEventFilter* mouseEventFilter = new MouseEventFilter();

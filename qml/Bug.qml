@@ -21,11 +21,13 @@ Item {
 
     property int sourceFilesIndex: 0
     property int timerCounter: 0
+    property int maxSpeed: 10
 
     Component.onCompleted: {
         bugModel.activeBugCollisionChanged.connect(onActiveBugCollisionChanged)
         bugModel.enabledChanged.connect(onBugEnabledChanged)
         bugModel.invincibilityEndWarning.connect(onInvincibilityEndWarning)
+        bugModel.speedChanged.connect(onSpeedChanged)
         setRandomPosition()
     }
 
@@ -49,6 +51,10 @@ Item {
 
     function onInvincibilityEndWarning() {
         invincibilityShapePath.strokeColor = "red"
+    }
+
+    function onSpeedChanged() {
+        maxSpeed = Math.round(bugModel.speed / 10)
     }
 
     function setRandomPosition() {
@@ -138,7 +144,7 @@ Item {
     }
 
     function move() {
-        var offset = 10
+        var offset = maxSpeed
         // x - stay inside the window
         if ((!((xAxisValue < 0) && (x + offset < 0))) && (!((xAxisValue >= 0) && (x + offset > mainWindow.width - 30))))
         {

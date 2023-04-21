@@ -20,6 +20,7 @@ void BugModel::initialize(int maxLives)
     setActiveBugCollision(false);
     setActiveBirdCollision(false);
     setEnabled(true);
+    setSpeed(100);
 }
 
 int BugModel::maxLives()
@@ -163,5 +164,18 @@ void BugModel::setEnabled(bool enabled)
     if (enabled != m_enabled) {
         m_enabled = enabled;
         emit enabledChanged();
+    }
+}
+
+int BugModel::speed()
+{
+    return m_speed;
+}
+
+void BugModel::setSpeed(int speed)
+{
+    if (speed != m_speed) {
+        m_speed = speed;
+        emit speedChanged();
     }
 }

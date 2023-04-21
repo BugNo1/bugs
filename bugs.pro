@@ -34,4 +34,5 @@ HEADERS += \
     common-library/player.h \
     common-library/player_tablemodel.h
 
-QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/common-media/gif) $$shell_path($$OUT_PWD/)
+QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/common-media/gif) $$shell_path($$OUT_PWD/);
+QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/media/bg) $$shell_path($$OUT_PWD/);

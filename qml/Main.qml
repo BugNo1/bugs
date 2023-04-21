@@ -17,18 +17,22 @@ Window {
 
     property var bugs: [bug1, bug2]
     property var birds: []
-    property var collectibleItems: [itemInvincibility, itemExtraLife]
+    property var collectibleItems: [itemInvincibility, itemExtraLife, itemSpeed]
     property var overlay
 
     Component.onCompleted: {
+        setBackground()
         BugModel1.enabledChanged.connect(onBug1EnabledChanged)
         BugModel2.enabledChanged.connect(onBug2EnabledChanged)
     }
 
     Image {
         id: background
-        source: "../media/bg.jpg"
         anchors.fill: parent
+    }
+
+    function setBackground() {
+        background.source = bgPath + "bg" + (Math.round(Math.random() * 11) + 1).toString().padStart(2, "0") + ".jpg"
     }
 
     ItemInvincibility {
@@ -38,6 +42,11 @@ Window {
 
     ItemExtraLife {
         id: itemExtraLife
+        itemActive: false
+    }
+
+    ItemSpeed {
+        id: itemSpeed
         itemActive: false
     }
 
@@ -114,6 +123,8 @@ Window {
 
     function gameResetAction() {
         console.log("Resetting game...")
+
+        setBackground()
 
         currentLevel = 1
         currentTime = 0
@@ -276,6 +287,10 @@ Window {
                                 // itemExtraLife
                                 condition = bugs[bugIndex].bugModel.lives !== bugs[bugIndex].bugModel.maxLives
                                 action = function func() {bugs[bugIndex].bugModel.updateLives(1)}
+                            } else if (itemIndex === 2) {
+                               // itemSpeed
+                               condition = true
+                               action = function func(speed) {bugs[bugIndex].bugModel.setSpeed(speed)}
                             }
                             collectibleItems[itemIndex].hit(condition, action)
                         }
