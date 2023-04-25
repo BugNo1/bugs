@@ -7,7 +7,7 @@ Item {
     width: 55
     height: 50
 
-    property var sourceFiles: ["../media/ladybug-up.png", "../media/ladybug-middle.png", "../media/ladybug-down.png" ]
+    property var sourceFiles: ["../bugs-media/ladybug-up.png", "../bugs-media/ladybug-middle.png", "../bugs-media/ladybug-down.png" ]
     property var bugModel
 
     // controller values - used as speed values for movement
@@ -73,7 +73,7 @@ Item {
             // must be here to be able to set-back the image when the bug stops
             changeImage()
             if (xAxisValue != 0.0 || yAxisValue != 0.0) {
-                bugSound.source = "../media/bug-walk.wav"
+                bugSound.source = "../bugs-media/bug-walk.wav"
                 bugSound.play()
                 move()
                 rotate()
@@ -214,11 +214,11 @@ Item {
 
     Audio {
         id: bugSound
-        source: "../media/bug-walk.wav"
+        source: "../bugs-media/bug-walk.wav"
     }
 
     SoundEffect {
         id: bugHit
-        source: "../media/hit.wav"
+        source: "../bugs-media/hit.wav"
     }
 }

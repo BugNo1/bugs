@@ -32,7 +32,7 @@ Window {
     }
 
     function setBackground() {
-        background.source = bgPath + "bg" + (Math.round(Math.random() * 11) + 1).toString().padStart(2, "0") + ".jpg"
+        background.source = bgPath + "bg" + (Math.round(Math.random() * 10) + 1).toString().padStart(2, "0") + ".jpg"
     }
 
     ItemInvincibility {
@@ -65,7 +65,7 @@ Window {
     Bug {
         id: bug2
         bugModel: BugModel2
-        sourceFiles: ["../media/ladybug-up-blue.png", "../media/ladybug-middle-blue.png", "../media/ladybug-down-blue.png" ]
+        sourceFiles: ["../bugs-media/ladybug-up-blue.png", "../bugs-media/ladybug-middle-blue.png", "../bugs-media/ladybug-down-blue.png" ]
         Connections {
             target: QJoysticks
             function onAxisChanged() {
@@ -88,8 +88,8 @@ Window {
             id: bug1LifeIndicator
             model: BugModel1
             player: GameData.player1
-            imageSource: "../media/ladybug-middle.png"
-            lifeLostAudioSource: "../media/bird-eating.wav"
+            imageSource: "../bugs-media/ladybug-middle.png"
+            lifeLostAudioSource: "../bugs-media/bird-eating.wav"
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
         TimeLevelIndicator {
@@ -100,8 +100,8 @@ Window {
             id: bug2LifeIndicator
             model: BugModel2
             player: GameData.player2
-            imageSource: "../media/ladybug-middle-blue.png"
-            lifeLostAudioSource: "../media/bird-eating.wav"
+            imageSource: "../bugs-media/ladybug-middle-blue.png"
+            lifeLostAudioSource: "../bugs-media/bird-eating.wav"
             Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
         }
     }
@@ -138,8 +138,8 @@ Window {
 
         overlay = Qt.createQmlObject('import "../common-qml"; GameStartOverlay {}', mainWindow, "overlay")
         overlay.gameName = "BUGS"
-        overlay.player1ImageSource = "../media/ladybug-middle.png"
-        overlay.player2ImageSource = "../media/ladybug-middle-blue.png"
+        overlay.player1ImageSource = "../bugs-media/ladybug-middle.png"
+        overlay.player2ImageSource = "../bugs-media/ladybug-middle-blue.png"
         overlay.signalStart = gameStateMachine.signalStartCountdown
     }
 

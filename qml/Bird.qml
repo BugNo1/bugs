@@ -105,7 +105,7 @@ Item {
 
         // play sound
         birdSound.source = ""
-        birdSound.source = "../media/bird.wav"
+        birdSound.source = "../bugs-media/bird.wav"
         birdSound.play()
     }
 
@@ -177,7 +177,7 @@ Item {
     Image {
         id: birdImage
         anchors.fill: parent
-        source: "../media/bird.png"
+        source: "../bugs-media/bird.png"
     }
 
     // enable for debugging
@@ -202,7 +202,7 @@ Item {
 
     Audio {
         id: birdSound
-        source: "../media/bird.wav"
+        source: "../bugs-media/bird.wav"
     }
 
     ParallelAnimation {

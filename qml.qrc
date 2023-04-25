@@ -4,17 +4,17 @@
         <file>Theme/Theme.qml</file>
         <file>qml/Bug.qml</file>
         <file>qml/Bird.qml</file>
-        <file>media/bird.png</file>
-        <file>media/bug-walk.wav</file>
-        <file>media/ladybug-down.png</file>
-        <file>media/ladybug-down-blue.png</file>
-        <file>media/ladybug-middle.png</file>
-        <file>media/ladybug-middle-blue.png</file>
-        <file>media/ladybug-up.png</file>
-        <file>media/ladybug-up-blue.png</file>
-        <file>media/hit.wav</file>
-        <file>media/bird-eating.wav</file>
-        <file>media/bird.wav</file>
+        <file>bugs-media/bird.png</file>
+        <file>bugs-media/bug-walk.wav</file>
+        <file>bugs-media/ladybug-down.png</file>
+        <file>bugs-media/ladybug-down-blue.png</file>
+        <file>bugs-media/ladybug-middle.png</file>
+        <file>bugs-media/ladybug-middle-blue.png</file>
+        <file>bugs-media/ladybug-up.png</file>
+        <file>bugs-media/ladybug-up-blue.png</file>
+        <file>bugs-media/hit.wav</file>
+        <file>bugs-media/bird-eating.wav</file>
+        <file>bugs-media/bird.wav</file>
         <file>common-media/countdown-end.wav</file>
         <file>common-media/countdown.wav</file>
         <file>common-media/extra-life.png</file>

@@ -10,3 +10,6 @@
 [submodule "common-library"]
 	path = common-library
 	url = git@github.com:BugNo1/common-library.git
+[submodule "bugs-media"]
+	path = bugs-media
+	url = git@github.com:BugNo1/bugs-media.git
