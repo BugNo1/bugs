@@ -40,13 +40,18 @@ Window {
         itemActive: false
     }
 
-    ItemExtraLife {
+    CollectibleItem {
         id: itemExtraLife
+        itemImageSource: "../common-media/extra-life.png"
+        hitSoundSource: "../common-media/life-gained.wav"
+        minimalWaitTime: 30000
         itemActive: false
     }
 
     ItemSpeed {
         id: itemSpeed
+        minimalSpeed: 50
+        minimalWaitTime: 30000
         itemActive: false
     }
 
@@ -186,7 +191,7 @@ Window {
         GameData.updateHighscores()
         GameData.saveHighscores()
 
-        overlay = Qt.createQmlObject('import "../common-qml"; GameEndOverlay {}', mainWindow, "overlay")
+        overlay = Qt.createQmlObject('import "../common-qml"; GameEndOverlay { gameType: GameEndOverlay.GameType.PvP }', mainWindow, "overlay")
         overlay.signalStart = gameStateMachine.signalResetGame
     }
 

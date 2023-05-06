@@ -32,7 +32,6 @@
         <file>common-qml/CrossButton.qml</file>
         <file>common-qml/GameEndOverlay.qml</file>
         <file>common-qml/GameStartOverlay.qml</file>
-        <file>common-qml/ItemExtraLife.qml</file>
         <file>common-qml/ItemInvincibility.qml</file>
         <file>common-qml/LifeIndicator.qml</file>
         <file>common-qml/PlayerNameInput.qml</file>
@@ -42,5 +41,6 @@
         <file>common-media/speed-sign.png</file>
         <file>common-media/impact.wav</file>
         <file>common-qml/ItemSpeed.qml</file>
+        <file>common-qml/CollectibleItem.qml</file>
     </qresource>
 </RCC>
